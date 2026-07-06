@@ -1,0 +1,5 @@
+CLASS /eacm/bp_i_zprim_view DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF /eacm/i_zprim_view.
+ENDCLASS.
+
+CLASS /eacm/bp_i_zprim_view IMPLEMENTATION.
+ENDCLASS.

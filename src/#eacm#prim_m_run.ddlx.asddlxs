@@ -1,0 +1,207 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Facsimile',
+  typeNamePlural: 'Facsimili',
+  title: { value: 'RunUuid' }
+}
+annotate entity /EACM/PRIM_C_RUN with
+{
+
+  @UI.facet: [
+    {
+      id: 'GeneralInfo',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Dati generali',
+      position: 10
+    },
+    {
+      id: 'Positions',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Posizioni',
+      position: 20,
+      targetElement: '_Positions',
+      targetQualifier: 'NoNavigation'
+    },
+  //    {
+  //      id: 'Enasarco',
+  //      purpose: #STANDARD,
+  //      type: #LINEITEM_REFERENCE,
+  //      label: 'Enasarco',
+  //      position: 30,
+  //      targetElement: '_Enasarco'
+  //    },
+  { id: 'idEnasarco', label: 'Enasarco', type: #COLLECTION, position: 30 },
+  { type: #FIELDGROUP_REFERENCE, targetQualifier: 'tqEnasarco', parentId: 'idEnasarco', position: 30 },
+
+    {
+      id: 'idRIT',
+      purpose: #STANDARD,
+      type: #COLLECTION,
+      label: 'Ritenuta d''acconto',
+      position: 40
+    },
+    {
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'tqRIT',
+      parentId: 'idRIT',
+      position: 40
+    },
+    {
+      id: 'IVA',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'IVA',
+      position: 50,
+      targetElement: '_IVA'
+    }
+  ]
+
+
+  //  //@UI.identification: [ { position: 10 } ]
+  @UI.lineItem: [
+    { position: 10, type : #FOR_ACTION, dataAction: 'onGenerate', label: 'Genera', requiresContext: true },
+    { position: 11, type : #FOR_ACTION, dataAction: 'onSave', label: 'Salva', requiresContext: true }
+  ]
+  RunUuid;
+  //  @UI.selectionField: [{ position: 20 }]
+  @UI.identification: [ { position: 10, label: 'Status' } ]
+  //  @UI.lineItem: [ { position: 20 } ]
+  RunStatus;
+  //  @UI.selectionField: [{ position: 30 }]
+  //  //@UI.identification: [ { position: 30 } ]
+  //  @UI.lineItem: [ { position: 30 } ]
+  //  CreatedBy;
+  @UI.selectionField: [{ position: 40 }]
+  //  //@UI.identification: [ { position: 40 } ]
+  //  @UI.lineItem: [ { position: 40 } ]
+  @Consumption.valueHelpDefinition: [{ entity:
+  {name: '/EACM/C_TVKO' , element: 'Vkorg' },
+  distinctValues: true
+  }]
+  Vkorg;
+  @UI.selectionField: [{ position: 50 }]
+  //  //@UI.identification: [ { position: 50 } ]
+  //  @UI.lineItem: [ { position: 50 } ]
+  @Consumption.valueHelpDefinition: [{
+    entity: {name: '/EACM/C_TVTW', element: 'Vtweg' },
+    useForValidation: true }]
+  Vtweg;
+  @UI.selectionField: [{ position: 60 }]
+  //@UI.identification: [ { position: 60 } ]
+  //  @UI.lineItem: [ { position: 60 } ]
+  @Consumption.valueHelpDefinition: [{ entity: {name: '/EACM/C_Zpr08', element: 'Zclpr' }, useForValidation: true }]
+  Zclpr;
+  @UI.selectionField: [{ position: 30 }]
+  @UI.identification: [ { position: 20 } ]
+  @UI.lineItem: [ { position: 70 } ]
+  @Consumption.valueHelpDefinition: [
+    {
+      entity: {
+        name: '/EACM/C_T001',
+        element: 'Bukrs'
+      },
+      useForValidation: true
+    }
+  ]
+  Bukrs;
+  //  @UI.selectionField: [{ position: 80 }]
+  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 80 } ]
+  Gjahr;
+  //  @UI.selectionField: [{ position: 90 }]
+  @UI.identification: [ { position: 40 } ]
+  @UI.lineItem: [ { position: 90 } ]
+  Zidfs;
+  //  @UI.selectionField: [{ position: 100 }]
+  @UI.identification: [ { position: 100 } ]
+  @UI.lineItem: [ { position: 1000 } ]
+  Lifnr;
+  @UI.selectionField: [{ position: 70 }]
+  @UI.identification: [ { position: 110 } ]
+  @UI.lineItem: [ { position: 110 } ]
+  @Consumption.valueHelpDefinition: [{ entity: {name: '/EACM/C_ZPRAA', element: 'Zcdaz' }, useForValidation: true }]
+  Zcdaz;
+  @UI.selectionField: [{ position: 10 }]
+  @UI.identification: [ { position: 120 } ]
+  @UI.lineItem: [ { position: 120 } ]
+  @Consumption.filter: {
+//        mandatory: true,
+      selectionType: #SINGLE
+  }
+  @Consumption.valueHelpDefinition: [
+    {
+      entity: {
+        name: '/EACM/I_FACRUN_DATE_VH',
+        element: 'Competence'
+      },
+      useForValidation: true
+    }
+  ]
+  Zamcf;
+  @UI.selectionField: [{ position: 20 }]
+  @UI.identification: [ { position: 130 } ]
+  @UI.lineItem: [ { position: 130 } ]
+  @Consumption.filter: {
+//      mandatory: true,
+    selectionType: #SINGLE
+  }
+  @Consumption.valueHelpDefinition: [
+    {
+      entity: {
+        name: '/EACM/I_FACRUN_DATE_VH',
+        element: 'CalendarDate'
+      },
+      useForValidation: true
+    }
+  ]
+  //  @Consumption.derivation: {
+  //    lookupEntity: '/EACM/I_FACRUN_Bldat',
+  //    resultElement: 'LastDayOfPrevMonth'
+  //  }
+  Bldat;
+  @UI.selectionField: [{ position: 80 }]
+  //@UI.identification: [ { position: 140 } ]
+  //  @UI.lineItem: [ { position: 140 } ]
+  @Consumption.filter: {
+  //      mandatory: true,
+      selectionType: #SINGLE
+  }
+  @UI.hidden: true
+  Waerk;
+  //  @UI.selectionField: [{ position: 150 }]
+  //  @UI.identification: [ { position: 150 } ]
+  @UI.lineItem: [ { position: 150 } ]
+  Zimprv;
+  @UI.fieldGroup: [{ qualifier: 'tqEnasarco', position: 155 }]
+  //  @UI.identification: [ { position: 160 } ]
+  Zibcef;
+  //  @UI.selectionField: [{ position: 160 }]
+  //@UI.identification: [ { position: 160 } ]
+  @UI.lineItem: [ { position: 160 } ]
+  @UI.fieldGroup: [{ qualifier: 'tqEnasarco', position: 160 }]
+  Zimena;
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 165 }]
+  Zimprac;
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 164 }]
+  Qproz;
+  //  @UI.selectionField: [{ position: 170 }]
+  //@UI.identification: [ { position: 170 } ]
+  //  @UI.lineItem: [ { position: 170 } ]
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 167 }]
+  Zimrac;
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 166 }]
+  Qsatz;
+  //  @UI.selectionField: [{ position: 180 }]
+  //@UI.identification: [ { position: 180 } ]
+  @UI.lineItem: [ { position: 180 } ]
+  Zimiva;
+  //  @UI.selectionField: [{ position: 190 }]
+  @UI.identification: [ { position: 190 } ]
+  @UI.lineItem: [ { position: 190 } ]
+  Ztotfs;
+  @UI.lineItem: [ { position: 200 } ]
+  Attachment;
+
+}

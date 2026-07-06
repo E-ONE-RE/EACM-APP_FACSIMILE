@@ -1,0 +1,7 @@
+@EndUserText.label: 'Visualizzazione facsimili'
+define service /EACM/ZPRIM_VIEW_SRV {
+  expose /EACM/C_ZPRIM_VIEW;
+  expose /EACM/C_FACSPOS_VIEW;
+  expose /EACM/C_ZPRFAC_VIEW;
+  expose /EACM/C_FACIVA_VIEW;
+}

@@ -1,0 +1,32 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Visualizzazione facsimili",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_ALV5_DEFAULT"
+  },
+  "ui5AppDetails": {
+    "appId": "zprimview2"
+  },
+  "navigation": {
+    "targetMappingId": "/EACM/FACVIEW_UI5R_V2_TM",
+    "semanticObject": "facview",
+    "action": "manage",
+    "desktop": true,
+    "tablet": true,
+    "phone": true
+  },
+  "tiles": [
+    {
+      "id": "/EACM/FACVIEW_UI5R_V2_AL",
+      "tileType": "static",
+      "standard": {
+        "title": "Visualizzazione facsimile"
+      }
+    }
+  ]
+}

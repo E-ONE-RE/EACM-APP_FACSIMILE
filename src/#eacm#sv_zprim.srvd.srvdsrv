@@ -1,0 +1,8 @@
+@EndUserText.label: 'Service issued facsimile'
+@ObjectModel.leadingEntity.name: '/EACM/C_ZPRIM'
+define service /EACM/SV_ZPRIM {
+  expose /EACM/C_ZPRIM              as a;
+  expose /EACM/C_FACPOS             as b;
+  expose /EACM/C_FACIVA             as c;
+  expose /EACM/I_BUSINESS_PARTNER_C as bp;
+}

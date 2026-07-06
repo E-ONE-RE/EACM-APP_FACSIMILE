@@ -1,0 +1,163 @@
+managed implementation in class /eacm/bp_i_zprim_view unique;
+strict ( 2 );
+
+define behavior for /EACM/I_ZPRIM_VIEW //alias <alias_name>
+persistent table /eacm/zprim
+lock master
+authorization master ( global )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  //  delete;
+  field ( readonly ) Bukrs, Gjahr, Zidfs;
+  association _IVA { create; }
+  association _Positions { create; }
+  association _Enasarco { create; }
+
+  //  action onDownload result [1] $self;
+  action onSendMail result [1] $self;
+  //  action onDelete result [1] $self;
+  //  action onPosting result [1] $self;
+
+  mapping for /eacm/zprim
+    {
+      Bukrs      = bukrs;
+      Gjahr      = gjahr;
+      Zidfs      = zidfs;
+      Lifnr      = lifnr;
+      Zamcf      = zamcf;
+      Waerk      = waerk;
+      Ztotfs     = ztotfs;
+      Zimprv     = zimprv;
+      Zimran     = zimran;
+      Mwskz      = mwskz;
+      Kalsm      = kalsm;
+      Zimiva     = zimiva;
+      Zimena     = zimena;
+      Zibcef     = zibcef;
+      Zimprac    = zimprac;
+      Qproz      = qproz;
+      Zimrac     = zimrac;
+      Qsatz      = qsatz;
+      Belnr      = belnr;
+      Bldat      = bldat;
+      Budat      = budat;
+      Zcont      = zcont;
+      Zrich      = zrich;
+      Zanticipo  = zanticipo;
+      Zcdaz      = zcdaz;
+      Name1      = name1;
+      Znzag      = znzag;
+      Cbdat      = cbdat;
+      Zuonr      = zuonr;
+      Zwaer      = zwaer;
+      Ztotfssf   = ztotfssf;
+      Zimprvsf   = zimprvsf;
+      Zimransf   = zimransf;
+      Zimprvsfc  = zimprvsfc;
+      Zimransfc  = zimransfc;
+      Zimenavsc  = zimenavsc;
+      Ztotfssfc  = ztotfssfc;
+      Zimpfat    = zimpfat;
+      Zimpfatvs  = zimpfatvs;
+      Zimpfatvsc = zimpfatvsc;
+      Zimpfondo  = zimpfondo;
+      Zenaaccu   = zenaaccu;
+      Zfndtrat   = zfndtrat;
+      Witht      = witht;
+      WtWithcd   = wt_withcd;
+      Zimpant    = zimpant;
+      Sgtxt      = sgtxt;
+      Ibelnr     = ibelnr;
+      FileName   = file_name;
+      MimeType   = mime_type;
+      Attachment = attachment;
+    }
+}
+
+define behavior for /EACM/I_FACIVA_VIEW //alias <alias_name>
+persistent table /eacm/faciva
+lock dependent by _Root
+authorization dependent by _Root
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) Bukrs, Gjahr, Zidfs, Mwskz, Kalsm;
+  association _Root;
+
+  mapping for /eacm/faciva
+    {
+      Bukrs        = bukrs;
+      Gjahr        = gjahr;
+      Zidfs        = zidfs;
+      Mwskz        = mwskz;
+      Kalsm        = kalsm;
+      Percentuale  = percentuale;
+      Imponibile   = imponibile;
+      Imposta      = imposta;
+      ImponibileVs = imponibile_vs;
+      Waerk        = waerk;
+    }
+}
+
+define behavior for /EACM/I_FACSPOS_VIEW //alias <alias_name>
+persistent table /eacm/facspos
+lock dependent by _Root
+authorization dependent by _Root
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) Bukrs, Gjahr, Zidfs, Zclpr, Zcspv, Mwskz, Kalsm;
+  association _Root;
+
+  mapping for /eacm/facspos
+    {
+      Bukrs   = bukrs;
+      Gjahr   = gjahr;
+      Zidfs   = zidfs;
+      Zclpr   = zclpr;
+      Zcspv   = zcspv;
+      Mwskz   = mwskz;
+      Kalsm   = kalsm;
+      Ziprv   = ziprv;
+      Msatz   = msatz;
+      Ziprvvs = ziprvvs;
+    }
+
+}
+
+define behavior for /EACM/I_ZPRFAC_VIEW //alias <alias_name>
+persistent table /eacm/zprfac
+lock dependent by _Root
+authorization dependent by _Root
+//etag master <field_name>
+{
+  update;
+  delete;
+  //  field ( readonly ) Bukrs, Gjahr, Lifnr, Waerk, Zamcf, Zidrg, Zidfs;
+  field ( readonly ) Bukrs, Gjahr, Zidfs;
+  association _Root;
+
+  mapping for /eacm/zprfac
+    {
+      Bukrs   = bukrs;
+      Gjahr   = gjahr;
+      Lifnr   = lifnr;
+      Waerk   = waerk;
+      Zamcf   = zamcf;
+      Zidrg   = zidrg;
+      Zidfs   = zidfs;
+      Zcdaz   = zcdaz;
+      Zimco   = zimco;
+      Zageca  = zageca;
+      Zageff  = zageff;
+      Zwaen   = zwaen;
+      Zimcoe  = zimcoe;
+      Zagecae = zagecae;
+      Zageffe = zageffe;
+      Kurrf   = kurrf;
+    }
+}

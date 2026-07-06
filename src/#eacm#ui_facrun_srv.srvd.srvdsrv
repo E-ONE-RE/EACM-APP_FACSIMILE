@@ -1,0 +1,9 @@
+@EndUserText.label: 'SD Generazione facsimile'
+@ObjectModel.leadingEntity.name: '/EACM/PRIM_C_RUN'
+define service /EACM/UI_FACRUN_SRV {
+  expose /EACM/PRIM_C_RUN;
+  expose /EACM/FACPOS_C_RUN;
+  expose /EACM/PRFAC_C_RUN;
+  expose /EACM/FACIVA_C_RUN;
+  expose /EACM/I_BUSINESS_PARTNER_C as BP;
+}

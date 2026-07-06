@@ -1,0 +1,219 @@
+@Metadata.layer: #CUSTOMER
+@UI.headerInfo: {
+  typeName: 'Facsimile',
+  typeNamePlural: 'Facsimili',
+  title: { value: 'Zidfs' }
+}
+annotate entity /EACM/C_ZPRIM_VIEW with
+{
+
+  @UI.facet: [
+    {
+      id: 'GeneralInfo',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Dati generali',
+      position: 10
+    },
+    {
+      id: 'Positions',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Posizioni',
+      position: 20,
+      targetElement: '_Positions',
+      targetQualifier: 'NoNavigation'
+    },
+  //    {
+  //      id: 'Enasarco',
+  //      purpose: #STANDARD,
+  //      type: #LINEITEM_REFERENCE,
+  //      label: 'Enasarco',
+  //      position: 30,
+  //      targetElement: '_Enasarco'
+  //    },
+  { id: 'idEnasarco', label: 'Enasarco', type: #COLLECTION, position: 30 },
+  { type: #FIELDGROUP_REFERENCE, targetQualifier: 'tqEnasarco', parentId: 'idEnasarco', position: 30 },
+
+    {
+      id: 'idRIT',
+      purpose: #STANDARD,
+      type: #COLLECTION,
+      label: 'Ritenuta d''acconto',
+      position: 40
+    },
+    {
+      type: #FIELDGROUP_REFERENCE,
+      targetQualifier: 'tqRIT',
+      parentId: 'idRIT',
+      position: 40
+    },
+    {
+      id: 'IVA',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'IVA',
+      position: 50,
+      targetElement: '_IVA'
+    }
+  ]
+
+  @UI.selectionField: [{ position: 10 }]
+  @Consumption.valueHelpDefinition: [
+    {
+      entity: {
+        name: '/EACM/R_T001',
+        element: 'Bukrs'
+      },
+      useForValidation: true
+    }
+  ]
+  //  @UI.lineItem: [ { position: 10 } ]
+  @UI.lineItem: [
+    { position: 10, type : #FOR_ACTION, dataAction: 'onPosting', label: 'Check Posting', requiresContext: true },
+    { position: 12, type : #FOR_ACTION, dataAction: 'onDownload', label: 'Download PDFs', requiresContext: true },
+    { position: 14, type : #FOR_ACTION, dataAction: 'onSendMail', label: 'Send mail', requiresContext: true },
+    { position: 16, type : #FOR_ACTION, dataAction: 'onDelete', label: 'Delete', requiresContext: true }
+  ]
+  @UI.identification: [ { position: 10 } ]
+  Bukrs;
+  @UI.lineItem: [ { position: 20 } ]
+  @UI.identification: [ { position: 20 } ]
+  Gjahr;
+  @UI.selectionField: [{ position: 20 }]
+  @Consumption.valueHelpDefinition: [
+    {
+      entity: {
+        name: '/EACM/I_ZPRIM_VIEW',
+        element: 'Zidfs'
+      },
+      useForValidation: true
+    }
+  ]
+  @UI.lineItem: [ { position: 30 } ]
+  Zidfs;
+  @UI.selectionField: [{ position: 50 }]
+  @Consumption.valueHelpDefinition: [
+  {
+    entity: {
+      name: '/EACM/I_ZPRAA',
+      element: 'Lifnr'
+    },
+    useForValidation: true
+  }
+  ]
+  @UI.lineItem: [ { position: 50 } ]
+  @UI.identification: [ { position: 55 } ]
+  Lifnr;
+  @UI.selectionField: [{ position: 30 }]
+  @Consumption.valueHelpDefinition: [
+    {
+      entity: {
+        name: '/EACM/I_FACRUN_DATE_VH',
+        element: 'Competence'
+      },
+      useForValidation: true
+    }
+  ]
+  @UI.lineItem: [ { position: 60 } ]
+  @UI.identification: [ { position: 30 } ]
+  Zamcf;
+  @UI.lineItem: [ { position: 70 } ]
+  @UI.identification: [ { position: 60 } ]
+  Waerk;
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  @UI.lineItem: [ { position: 80 } ]
+  @UI.identification: [ { position: 70, importance: #HIGH } ]
+  Ztotfs;
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zimprv,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zimran,
+  //    Mwskz,
+  //    Kalsm,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zimiva,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  @UI.fieldGroup: [{ qualifier: 'tqEnasarco', position: 320 }]
+  Zimena;
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  @UI.fieldGroup: [{ qualifier: 'tqEnasarco', position: 310 }]
+  Zibcef;
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 420 }]
+  Zimprac;
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 410 }]
+  Qproz;
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 440 }]
+  Zimrac;
+  @UI.fieldGroup: [{ qualifier: 'tqRIT', position: 430 }]
+  Qsatz;
+  //    Belnr,
+  //    Bldat,
+  //    Budat,
+  //    Zcont,
+  //    Zrich,
+  //    Zanticipo,
+  @UI.selectionField: [{ position: 40 }]
+  @Consumption.valueHelpDefinition: [
+  {
+    entity: {
+      name: '/EACM/I_ZPRAA',
+      element: 'Zcdaz'
+    },
+    useForValidation: true
+  }
+  ]
+  @UI.identification: [ { position: 40 } ]
+  Zcdaz;
+  @UI.identification: [ { position: 50 } ]
+  @UI.selectionField: [{ position: 50 }]
+  Name1;
+  //    Znzag,
+  //    Cbdat,
+  //    Zuonr,
+  //    Zwaer,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Ztotfssf,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimprvsf,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimransf,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimprvsfc,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimransfc,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimenavsc,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Ztotfssfc,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zimpfat,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimpfatvs,
+  //    @Semantics.amount.currencyCode : 'Zwaer'
+  //    Zimpfatvsc,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zimpfondo,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zenaaccu,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zfndtrat,
+  //    Witht,
+  //    WtWithcd,
+  //    @Semantics.amount.currencyCode : 'Waerk'
+  //    Zimpant,
+  //    Sgtxt,
+  //    Ibelnr,
+
+  @UI.hidden: true
+  FileName;
+  @UI.lineItem: [{ position: 100 }]
+  Attachment;
+  //    /* Associations */
+  //    _Enasarco: redirected to composition child /EACM/C_ZPRFAC_VIEW,
+  //    _IVA: redirected to composition child /EACM/C_FACIVA_VIEW,
+  //    _Positions : redirected to composition child /EACM/C_FACSPOS_VIEW
+
+}

@@ -1,0 +1,34 @@
+{
+  "formatVersion": "2",
+  "header": {
+    "description": "Generazionve facsimile",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "appType": "ui5",
+    "catalogId": "SAP_TC_ALV5_DEFAULT"
+  },
+  "ui5AppDetails": {
+    "appId": "zfacrun"
+  },
+  "navigation": {
+    "targetMappingId": "/EACM/FACRUN_UI5R_V2_TM",
+    "semanticObject": "zfacrun",
+    "action": "manage",
+    "desktop": true,
+    "tablet": true,
+    "phone": true,
+    "additionalParameterHandling": "ignored"
+  },
+  "tiles": [
+    {
+      "id": "/EACM/FACRUN_UI5R_V2_AL",
+      "tileType": "static",
+      "isDefault": true,
+      "standard": {
+        "title": "Generazione facsimile"
+      }
+    }
+  ]
+}

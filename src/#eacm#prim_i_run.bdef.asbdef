@@ -1,0 +1,58 @@
+unmanaged implementation in class /eacm/bp_prim_i_run unique;
+strict ( 2 );
+
+define behavior for /EACM/PRIM_I_RUN //alias <alias_name>
+//late numbering
+lock master
+authorization master ( instance )
+//etag master <field_name>
+{
+  create ( authorization : global );
+  update;
+  delete;
+  field ( readonly ) RunUuid;
+  association _IVA { create; }
+  association _Positions { create; }
+  association _Enasarco { create; }
+
+  action onSave result [1] $self;
+  static action ( authorization : global ) onGenerate deep parameter /EACM/FACRUN_A_PARAM;
+
+}
+
+define behavior for /EACM/FACIVA_I_RUN //alias <alias_name>
+//late numbering
+lock dependent by _Root
+authorization dependent by _Root
+//etag master <field_name>
+{
+  update;
+  delete;
+  //  field ( readonly ) RunUuid, Bukrs, Gjahr, Zidfs, Mwskz, Kalsm;
+  field ( readonly ) RunUuid, Bukrs, Gjahr, Mwskz, Kalsm;
+  association _Root;
+}
+
+define behavior for /EACM/FACPOS_I_RUN //alias <alias_name>
+//late numbering
+lock dependent by _Root
+authorization dependent by _Root
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) RunUuid, Zclpr;
+  association _Root;
+}
+
+define behavior for /EACM/PRFAC_I_RUN //alias <alias_name>
+//late numbering
+lock dependent by _Root
+authorization dependent by _Root
+//etag master <field_name>
+{
+  update;
+  delete;
+  field ( readonly ) RunUuid, Bukrs, Gjahr, Lifnr, Waerk, Zamcf, Zidrg;
+  association _Root;
+}

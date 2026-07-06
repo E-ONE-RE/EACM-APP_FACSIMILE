@@ -1,0 +1,43 @@
+projection;
+strict ( 2 );
+
+define behavior for /EACM/C_ZPRIM_VIEW //alias <alias_name>
+{
+  use create;
+  use update;
+  //  use delete;
+
+  use association _IVA { create; }
+  use association _Positions { create; }
+  use association _Enasarco { create; }
+
+//  use action onDownload;
+  use action onSendMail;
+//  use action onDelete;
+//  use action onPosting;
+
+}
+
+define behavior for /EACM/C_FACIVA_VIEW //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Root;
+}
+
+define behavior for /EACM/C_FACSPOS_VIEW //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Root;
+}
+
+define behavior for /EACM/C_ZPRFAC_VIEW //alias <alias_name>
+{
+  use update;
+  use delete;
+
+  use association _Root;
+}

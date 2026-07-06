@@ -1,0 +1,90 @@
+@AccessControl.authorizationCheck: #NOT_REQUIRED
+@EndUserText.label: '/EACM/C_ZPRIM'
+@ObjectModel.supportedCapabilities: [ #OUTPUT_FORM_DATA_PROVIDER ]
+@Metadata.allowExtensions: true
+define root view entity /EACM/C_ZPRIM
+  provider contract transactional_query
+  as projection on /EACM/I_ZPRIM
+{
+  key Bukrs,
+  key Gjahr,
+  key Zidfs,
+
+      Lifnr,
+      Zamcf,
+      ZamcfFmt,
+      Waerk,
+      Ztotfs,
+      TipoDoc,
+      Zimprv,
+      Zimran,
+      Mwskz,
+      Kalsm,
+      Zimiva,
+      Zimena,
+      Zibcef,
+      Zimprac,
+      Qproz,
+      Zimrac,
+      ZimracNeg,
+      Qsatz,
+      Belnr,
+      Bldat,
+      BldatFmt,
+      Budat,
+      Zcont,
+      Zrich,
+      Zanticipo,
+      Zcdaz,
+      Name1,
+      Znzag,
+      Cbdat,
+      Zuonr,
+      Zwaer,
+      Ztotfssf,
+      Zimprvsf,
+      Zimransf,
+      Zimprvsfc,
+      Zimransfc,
+      Zimenavsc,
+      Ztotfssfc,
+      Zimpfat,
+      Zimpfatvs,
+      Zimpfatvsc,
+      Zimpfondo,
+      Zenaaccu,
+      Zfndtrat,
+      Witht,
+      WtWithcd,
+      Zimpant,
+      Sgtxt,
+      Ibelnr,
+      ZiprvTot,
+      ZimenaNeg,
+      TotDopoEnasarco,
+      TotDopoRitenuta,
+      FileName,
+      TotaleDocumentoFinale,
+      Zpage,
+      Butxt,
+      City,
+      Post_code,
+      Street,
+      Country,
+      Region,
+      Stceg,
+      Stcd1,
+      @Semantics.mimeType: true
+      MimeType,
+
+      @Semantics.largeObject: {
+        mimeType: 'MimeType',
+        fileName: 'FileName',
+        contentDispositionPreference: #ATTACHMENT
+      }
+      Attachment,
+
+      _FacPos : redirected to composition child /EACM/C_FACPOS,
+      _FacIva : redirected to composition child /EACM/C_FACIVA,
+      _Supplier
+}

@@ -1,0 +1,24 @@
+@Metadata.layer: #CORE
+annotate entity /EACM/C_ZPRIM with
+{
+  @UI.lineItem: [{ position: 10 }]
+  @UI.selectionField: [{ position: 10 }]
+  Bukrs;
+
+  @UI.lineItem: [{ position: 20 }]
+  @UI.selectionField: [{ position: 20 }]
+  Gjahr;
+
+  @UI.lineItem: [{ position: 30 }]
+  @UI.selectionField: [{ position: 30 }]
+  Zidfs;
+
+  @UI.hidden: true
+  FileName;
+
+  @UI.hidden: true
+  MimeType;
+
+  @UI.lineItem: [{ position: 40 }]
+  Attachment;
+}
