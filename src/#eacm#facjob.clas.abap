@@ -166,8 +166,7 @@ CLASS /eacm/facjob IMPLEMENTATION.
   METHOD prage_rpd.
 *Stampa PRAGE - tabella /eacm/rpd
     UPDATE /eacm/rpd
-    SET filename = 'xxGENxx',
-        filename_age = 'xxGENxx'
+    SET filename = 'xxGENxx'
     WHERE filename = @space.
 
     SELECT FROM /eacm/rpd
@@ -181,9 +180,9 @@ CLASS /eacm/facjob IMPLEMENTATION.
       TRY.
           ls_rpd-filename = |RPD_SET{ ls_rpd-Fkdat_YYYY }{ ls_rpd-fkdat_mm }|.
           ls_rpd-attachment = lc_rpd->get_rpf( EXPORTING i_yyyy = ls_rpd-Fkdat_YYYY i_mm = ls_rpd-fkdat_mm ).
-          ls_rpd-att_age = lc_rpd->get_rpfage( EXPORTING i_yyyy = ls_rpd-Fkdat_YYYY i_mm = ls_rpd-fkdat_mm ).
-          ls_rpd-filename_age = |RPD_AGE{ ls_rpd-Fkdat_YYYY }{ ls_rpd-Fkdat_MM }|.
-          UPDATE /eacm/rpd FROM @ls_rpd.
+*          ls_rpd-att_age = lc_rpd->get_rpfage( EXPORTING i_yyyy = ls_rpd-Fkdat_YYYY i_mm = ls_rpd-fkdat_mm ).
+*          ls_rpd-filename_age = |RPD_AGE{ ls_rpd-Fkdat_YYYY }{ ls_rpd-Fkdat_MM }|.
+*          UPDATE /eacm/rpd FROM @ls_rpd.
         CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
 *          "handle exception
           CONTINUE.
