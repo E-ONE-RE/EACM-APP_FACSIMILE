@@ -6,18 +6,30 @@ CLASS /eacm/cl_fill_bp_cache DEFINITION
   PUBLIC SECTION.
 
     INTERFACES if_apj_rt_run .
+    METHODS run RAISING cx_apj_rt_content.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
-CLASS /eacm/cl_fill_bp_cache IMPLEMENTATION.
+CLASS /EACM/CL_FILL_BP_CACHE IMPLEMENTATION.
 
 
   METHOD if_apj_rt_run~execute.
 
-    SELECT FROM /eacm/bp_cache  "#EC CI_NOWHERE
+    TRY.
+        run( ).
+      CATCH cx_apj_rt_content INTO DATA(lo_cx).
+        "handle exception
+        RAISE EXCEPTION TYPE cx_apj_rt_content EXPORTING previous = lo_cx.
+    ENDTRY.
+  ENDMETHOD.
+
+
+  METHOD run.
+
+    SELECT FROM /eacm/bp_cache                          "#EC CI_NOWHERE
     FIELDS *
     INTO TABLE @DATA(lt_bp_cache).
     LOOP AT lt_bp_cache INTO DATA(ls_bp_cache).
@@ -27,6 +39,7 @@ CLASS /eacm/cl_fill_bp_cache IMPLEMENTATION.
           IF ls_bp_cache-last_change_date = ls_address-bp-last_change_date OR ls_address IS INITIAL.
             CONTINUE.
           ENDIF.
+          DATA(ls_tax) = NEW /eacm/cl_api_business_partner( )->read_with_tax_numbers( ls_bp_cache-business_partner ).
           ls_bp_cache-first_name = ls_address-bp-first_name.
           ls_bp_cache-last_name = ls_address-bp-last_name.
           ls_bp_cache-land1 = ls_address-addresses[ 1 ]-country.
@@ -38,6 +51,27 @@ CLASS /eacm/cl_fill_bp_cache IMPLEMENTATION.
 *          ls_bp_cache-stceg = ls_address-bp-.
 *          ls_bp_cache-stcd1 = .
           ls_bp_cache-last_change_date = ls_address-bp-last_change_date.
+          "/TAX
+          ls_bp_cache-stceg = ls_tax-vat_number.
+          ls_bp_cache-stcd1 = ls_tax-tax_code.
+          LOOP AT ls_tax-tax_numbers INTO DATA(ls_tax_number).
+            CASE ls_tax_number-tax_type+2(1).
+              WHEN '0'.
+                IF ls_tax-vat_number IS INITIAL.
+                  ls_bp_cache-stceg = ls_tax_number-tax_number.
+                ENDIF.
+              WHEN '1'.
+                IF ls_tax-tax_code IS INITIAL.
+                  ls_bp_cache-stcd1 = ls_tax_number-tax_number.
+                ENDIF.
+              WHEN '2'.
+                ls_bp_cache-stcd2 = ls_tax_number-tax_number.
+            ENDCASE.
+          ENDLOOP.
+          IF ls_bp_cache-stcd1 IS INITIAL.
+            ls_bp_cache-stcd1 = ls_bp_cache-stceg.
+          ENDIF.
+          "\TAX
           MODIFY /eacm/bp_cache FROM  @ls_bp_cache.
         CATCH /eacm/cx_api_error INTO DATA(lx).
           DATA(msg) = lx->get_text( ).
@@ -85,6 +119,7 @@ CLASS /eacm/cl_fill_bp_cache IMPLEMENTATION.
           IF ls_address IS INITIAL.
             CONTINUE.
           ENDIF.
+          ls_tax = NEW /eacm/cl_api_business_partner( )->read_with_tax_numbers( ls_bp-business_partner ).
           ls_bp_cache-business_partner = ls_bp-business_partner.
           ls_bp_cache-first_name = ls_address-bp-first_name.
           ls_bp_cache-last_name = ls_address-bp-last_name.
@@ -97,6 +132,27 @@ CLASS /eacm/cl_fill_bp_cache IMPLEMENTATION.
 *          ls_bp_cache-stceg = ls_address-bp-.
 *          ls_bp_cache-stcd1 = .
           ls_bp_cache-last_change_date = ls_address-bp-last_change_date.
+          "/TAX
+          ls_bp_cache-stceg = ls_tax-vat_number.
+          ls_bp_cache-stcd1 = ls_tax-tax_code.
+          LOOP AT ls_tax-tax_numbers INTO ls_tax_number.
+            CASE ls_tax_number-tax_type+2(1).
+              WHEN '0'.
+                IF ls_tax-vat_number IS INITIAL.
+                  ls_bp_cache-stceg = ls_tax_number-tax_number.
+                ENDIF.
+              WHEN '1'.
+                IF ls_tax-tax_code IS INITIAL.
+                  ls_bp_cache-stcd1 = ls_tax_number-tax_number.
+                ENDIF.
+              WHEN '2'.
+                ls_bp_cache-stcd2 = ls_tax_number-tax_number.
+            ENDCASE.
+          ENDLOOP.
+          IF ls_bp_cache-stcd1 IS INITIAL.
+            ls_bp_cache-stcd1 = ls_bp_cache-stceg.
+          ENDIF.
+          "\TAX
           INSERT /eacm/bp_cache FROM  @ls_bp_cache.
         CATCH /eacm/cx_api_error INTO lx.
           msg = lx->get_text( ).

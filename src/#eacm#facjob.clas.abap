@@ -7,6 +7,23 @@ CLASS /eacm/facjob DEFINITION
 
     INTERFACES if_apj_rt_run.
 
+    "! <p class="shorttext synchronized" lang="en">Società</p>
+    DATA p_bukrs TYPE bukrs.
+
+    "! <p class="shorttext synchronized" lang="en">Esercizio</p>
+    DATA p_gjahr TYPE gjahr.
+
+    "! <p class="shorttext synchronized" lang="en">ID fattura</p>
+    DATA p_zidfs TYPE /eacm/zidfs.
+
+    METHODS facsimili_zprim
+      IMPORTING i_bukrs TYPE bukrs
+                i_gjahr TYPE gjahr
+                i_zidfs TYPE /eacm/zidfs.
+    METHODS facsimili_preview.
+    METHODS prage_rpd.
+    METHODS prage_rpc.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
 
@@ -18,24 +35,16 @@ CLASS /eacm/facjob DEFINITION
         cx_fp_form_reader
         cx_fp_ads_util.
 
-    METHODS facsimili_zprim.
-    METHODS facsimili_preview.
-    METHODS prage_rpd.
-    METHODS prage_rpc.
+*    METHODS facsimili_zprim.
+*    METHODS facsimili_preview.
+*    METHODS prage_rpd.
+*    METHODS prage_rpc.
 ENDCLASS.
 
 
 
 CLASS /eacm/facjob IMPLEMENTATION.
 
-  METHOD if_apj_rt_run~execute.
-
-    facsimili_preview( )..
-    facsimili_zprim( ).
-    prage_rpd( ).
-    prage_rpc( ).
-
-  ENDMETHOD.
 
   METHOD generate_and_store_run.
 
@@ -58,6 +67,7 @@ CLASS /eacm/facjob IMPLEMENTATION.
 
     DATA(ls_layout) = lo_reader->get_layout( ).
     DATA rv_pdf TYPE xstring.
+
     cl_fp_ads_util=>render_pdf(
       EXPORTING
         iv_xml_data   = lv_data
@@ -85,109 +95,270 @@ CLASS /eacm/facjob IMPLEMENTATION.
           mime_type  = 'application/pdf',
           attachment = @lv_pdf
       WHERE Run_Uuid = @i_uid.
+    COMMIT WORK AND WAIT.
 
   ENDMETHOD.
+
 
   METHOD facsimili_preview.
 * Facsimili generati
     "Come se impostassi un lock sul record
-    UPDATE /eacm/prim_run
-    SET file_name = 'xxGENxx'
-    WHERE file_name = @space.
+
 
     SELECT FROM /eacm/prim_run
     FIELDS run_uuid
-    WHERE file_name = 'xxGENxx'
+    WHERE file_name = @space
     INTO TABLE  @DATA(lt_zprim_run).
 
     LOOP AT lt_zprim_run INTO DATA(ls_zprim_run).
-      TRY.
-          generate_and_store_run( ls_zprim_run-run_uuid ).
-        CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
-          "handle exception
-          CONTINUE.
-      ENDTRY.
+      UPDATE /eacm/prim_run
+      SET file_name = 'xxGENxx'
+      WHERE run_uuid = @ls_zprim_run-run_uuid
+      AND file_name = @space.
+      IF sy-subrc = 0.
+        COMMIT WORK AND WAIT.
+        TRY.
+            generate_and_store_run( ls_zprim_run-run_uuid ).
+          CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util INTO DATA(lx_error).
+            DATA(msg) = lx_error->get_longtext(  ).
+            "handle exception
+            UPDATE /eacm/prim_run
+            SET file_name = @space
+            WHERE run_uuid = @ls_zprim_run-run_uuid.
+            COMMIT WORK AND WAIT.
+            CONTINUE.
+        ENDTRY.
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
+
 
   METHOD facsimili_zprim.
-    "Come se impostassi un lock sul record
-    UPDATE /eacm/zprim
-    SET file_name = 'xxGENxx'
-    WHERE file_name = @space.
 
-    SELECT FROM /eacm/zprim
-    FIELDS bukrs, gjahr, zidfs
-    WHERE file_name = 'xxGENxx'
-    INTO TABLE  @DATA(lt_zprim).
+    DATA lv_now TYPE timestampl.
+    DATA lv_start TYPE timestampl.
+    DATA is_persistent TYPE abap_bool.
 
-    LOOP AT lt_zprim INTO DATA(ls_zprim).
-      TRY.
-          /eacm/cl_zprim_form=>generate_and_store(
-            iv_bukrs = ls_zprim-bukrs
-            iv_gjahr = ls_zprim-gjahr
-            iv_zidfs = ls_zprim-zidfs
-          ).
-        CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
-          "handle exception
-          CONTINUE.
-      ENDTRY.
-    ENDLOOP.
+    is_persistent = abap_false.
+    GET TIME STAMP FIELD lv_start.
+
+    WHILE is_persistent = abap_false.
+
+      SELECT SINGLE FROM /eacm/zprim
+      FIELDS bukrs, gjahr, zidfs, file_name
+      WHERE bukrs = @i_bukrs
+      AND gjahr = @i_gjahr
+      AND zidfs = @i_zidfs
+*    AND file_name = @space
+     INTO  @DATA(ls_zprim).
+      IF sy-subrc = 0.
+        is_persistent = abap_true.
+        EXIT.
+      ENDIF.
+
+      " Controllo timeout
+      GET TIME STAMP FIELD lv_now.
+
+      DATA(lv_elapsed_seconds) =
+        cl_abap_tstmp=>subtract(
+          tstmp1 = lv_now
+          tstmp2 = lv_start
+        ).
+
+      IF lv_elapsed_seconds >= 3600.
+        " Timeout dopo 1 ora
+        EXIT.
+      ENDIF.
+
+      " Evita di interrogare continuamente il DB
+      WAIT UP TO 5 SECONDS.
+
+    ENDWHILE.
+
+    IF ls_zprim IS NOT INITIAL AND ls_zprim-file_name = space.
+
+      UPDATE /eacm/zprim
+      SET file_name = 'xxGENxx'
+      WHERE bukrs = @ls_zprim-bukrs
+      AND gjahr = @ls_zprim-gjahr
+      AND zidfs = @ls_zprim-zidfs
+      AND file_name = @space.
+      IF sy-subrc = 0.
+        COMMIT WORK AND WAIT.
+        TRY.
+            /eacm/cl_zprim_form=>generate_and_store(
+              iv_bukrs = ls_zprim-bukrs
+              iv_gjahr = ls_zprim-gjahr
+              iv_zidfs = ls_zprim-zidfs
+            ).
+          CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
+            "handle exception
+            UPDATE /eacm/zprim
+            SET file_name = @space
+            WHERE bukrs = @ls_zprim-bukrs
+            AND gjahr = @ls_zprim-gjahr
+            AND zidfs = @ls_zprim-zidfs.
+            COMMIT WORK AND WAIT.
+        ENDTRY.
+      ENDIF.
+
+    ENDIF.
+
   ENDMETHOD.
 
+
   METHOD prage_rpc.
+
 *Stampa PRAGE - tabella /eacm/rpc
-    UPDATE /eacm/rpc
-    SET filename = 'xxGENxx',
-        filename_age = 'xxGENxx'
-    WHERE filename = @space.
+
 
     SELECT FROM /eacm/rpc
     FIELDS *
-    WHERE filename = 'xxGENxx'
-    INTO TABLE  @DATA(lt_rpc).
+    WHERE filename = @space
+    INTO TABLE @DATA(lt_rpc).
 
     DATA(lc_rpc) = NEW /eacm/cl_rpc( ).
+    DATA lv_mm TYPE n LENGTH 2.
 
     LOOP AT lt_rpc INTO DATA(ls_rpc).
-      TRY.
-          ls_rpc-filename = |RPD_SET{ ls_rpc-fkdat_yyyy }{ ls_rpc-fkdat_mm }|.
-          ls_rpc-attachment = lc_rpc->get_pdf_sorg( EXPORTING i_bukrs = ls_rpc-bukrs i_yyyy = ls_rpc-Fkdat_YYYY i_mm = ls_rpc-fkdat_mm ).
-          ls_rpc-att_age = lc_rpc->get_pdf_age( EXPORTING i_bukrs = ls_rpc-bukrs i_yyyy = ls_rpc-Fkdat_YYYY i_mm = ls_rpc-fkdat_mm ).
-          ls_rpc-filename_age = |RPD_AGE{ ls_rpc-Fkdat_YYYY }{ ls_rpc-Fkdat_MM }|.
-          UPDATE /eacm/rpc FROM @ls_rpc.
-        CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
-*          "handle exception
-          CONTINUE.
-      ENDTRY.
+
+      UPDATE /eacm/rpc
+      SET filename = 'xxGENxx'
+      WHERE bukrs = @ls_rpc-bukrs
+        AND fkdat_yyyy  = @ls_rpc-fkdat_yyyy
+        AND fkdat_mm = @ls_rpc-fkdat_mm
+        AND vkorg = @ls_rpc-vkorg
+        AND zcdaz = @ls_rpc-zcdaz
+        AND filename = @space.
+      IF sy-subrc = 0.
+        COMMIT WORK AND WAIT.
+
+        ls_rpc-mime_type = 'application/pdf'.
+        lv_mm = ls_rpc-fkdat_mm.
+
+
+        IF ls_rpc-zcdaz IS INITIAL AND ls_rpc-vkorg IS INITIAL.
+          "completo
+          ls_rpc-filename = |PRAGE4_ALL_{ lv_mm }{ ls_rpc-fkdat_yyyy }.pdf|.
+          lc_rpc->pdf_completo(
+            CHANGING
+              c_rpc = ls_rpc
+          ).
+        ELSE.
+
+          IF ls_rpc-zcdaz IS INITIAL.
+            "settore
+            ls_rpc-filename = |PRAGE4_{ ls_rpc-vkorg(3) }_{ lv_mm }{ ls_rpc-fkdat_yyyy }.pdf|.
+            lc_rpc->pdf_settori(
+              CHANGING
+                c_rpc = ls_rpc
+            ).
+          ELSE.
+            "agente
+            ls_rpc-filename = |PRAGE5_{ ls_rpc-zcdaz }_{ lv_mm }{ ls_rpc-fkdat_yyyy }.pdf|.
+            lc_rpc->pdf_agente(
+              CHANGING
+                c_rpc = ls_rpc
+            ).
+          ENDIF.
+
+        ENDIF.
+
+        IF ls_rpc-attachment IS INITIAL.
+          CLEAR ls_rpc-filename.
+        ENDIF.
+        UPDATE /eacm/rpc FROM @ls_rpc.
+        COMMIT WORK AND WAIT.
+      ENDIF.
     ENDLOOP.
+
+
   ENDMETHOD.
 
+
   METHOD prage_rpd.
+
 *Stampa PRAGE - tabella /eacm/rpd
-    UPDATE /eacm/rpd
-    SET filename = 'xxGENxx'
-    WHERE filename = @space.
+
 
     SELECT FROM /eacm/rpd
     FIELDS *
-    WHERE filename = 'xxGENxx'
-    INTO TABLE  @DATA(lt_rpd).
+    WHERE filename = @space
+    INTO TABLE @DATA(lt_rpd).
 
     DATA(lc_rpd) = NEW /eacm/cl_rpd( ).
+    DATA lv_mm TYPE n LENGTH 2.
 
     LOOP AT lt_rpd INTO DATA(ls_rpd).
-      TRY.
-          ls_rpd-filename = |RPD_SET{ ls_rpd-Fkdat_YYYY }{ ls_rpd-fkdat_mm }|.
-          ls_rpd-attachment = lc_rpd->get_rpf( EXPORTING i_yyyy = ls_rpd-Fkdat_YYYY i_mm = ls_rpd-fkdat_mm ).
-*          ls_rpd-att_age = lc_rpd->get_rpfage( EXPORTING i_yyyy = ls_rpd-Fkdat_YYYY i_mm = ls_rpd-fkdat_mm ).
-*          ls_rpd-filename_age = |RPD_AGE{ ls_rpd-Fkdat_YYYY }{ ls_rpd-Fkdat_MM }|.
-*          UPDATE /eacm/rpd FROM @ls_rpd.
-        CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
-*          "handle exception
-          CONTINUE.
-      ENDTRY.
+
+      UPDATE /eacm/rpd
+      SET filename = 'xxGENxx'
+      WHERE bukrs = @ls_rpd-bukrs
+        AND fkdat_yyyy  = @ls_rpd-fkdat_yyyy
+        AND fkdat_mm = @ls_rpd-fkdat_mm
+        AND vkorg = @ls_rpd-vkorg
+        AND zcdaz = @ls_rpd-zcdaz
+        AND filename = @space.
+      IF sy-subrc = 0.
+        COMMIT WORK AND WAIT.
+
+        ls_rpd-mime_type = 'application/pdf'.
+        lv_mm = ls_rpd-fkdat_mm.
+
+        IF ls_rpd-zcdaz IS INITIAL.
+          IF ls_rpd-vkorg IS INITIAL AND ls_rpd-zcdaz IS INITIAL.
+            "completo
+            ls_rpd-filename = |PRAGE3_{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
+            lc_rpd->pdf_completo(
+              CHANGING
+                c_rpd = ls_rpd
+            ).
+          ELSEIF ls_rpd-vkorg IS NOT INITIAL.
+            "settore
+            ls_rpd-filename = |PRAGE7_{ ls_rpd-vkorg }{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
+            lc_rpd->pdf_settori(
+              CHANGING
+                c_rpd = ls_rpd
+            ).
+          ENDIF.
+        ELSE. "IF ls_rpd-zcdaz IS NOT INITIAL.
+          "agente
+          DATA(lv_strage) = |{ ls_rpd-zcdaz }%|.
+          SELECT SINGLE FROM /eacm/zpraa
+          FIELDS kunnr
+          WHERE zcdaz LIKE @lv_strage
+          INTO @DATA(lv_kunnr).
+          IF lv_kunnr IS NOT INITIAL.
+            ls_rpd-filename = |{ lv_kunnr }_A_{ ls_rpd-bukrs }_#_1_PROVV_CALC_{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
+          ELSE.
+            ls_rpd-filename = |NA_{ ls_rpd-zcdaz }_{ ls_rpd-bukrs }_#_NO_ZPRAA_PRAGE3_{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
+          ENDIF.
+
+          lc_rpd->pdf_agente(
+            CHANGING
+              c_rpd = ls_rpd
+          ).
+        ENDIF.
+
+        IF ls_rpd-attachment IS INITIAL.
+          CLEAR ls_rpd-filename.
+        ENDIF.
+        UPDATE /eacm/rpd FROM @ls_rpd.
+        COMMIT WORK AND WAIT.
+      ENDIF.
     ENDLOOP.
   ENDMETHOD.
 
+
+  METHOD if_apj_rt_run~execute.
+
+    IF p_zidfs IS INITIAL.
+      facsimili_preview( ).
+      prage_rpd( ).
+      prage_rpc( ).
+    ELSE.
+      facsimili_zprim( EXPORTING i_bukrs = p_bukrs i_gjahr = p_gjahr i_zidfs = p_zidfs ).
+    ENDIF.
+
+  ENDMETHOD.
 ENDCLASS.

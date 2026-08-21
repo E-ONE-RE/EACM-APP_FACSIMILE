@@ -7,5 +7,21 @@
   },
   "generalInformation": {
     "catalogName": "/EACM/FACJOB"
+  },
+  "parameters": {
+    "singleValueParameters": [
+      {
+        "name": "P_BUKRS",
+        "value": ""
+      },
+      {
+        "name": "P_GJAHR",
+        "value": ""
+      },
+      {
+        "name": "P_ZIDFS",
+        "value": ""
+      }
+    ]
   }
 }

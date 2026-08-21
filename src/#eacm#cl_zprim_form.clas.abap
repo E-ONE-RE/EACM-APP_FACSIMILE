@@ -28,7 +28,8 @@ ENDCLASS.
 
 
 
-CLASS /eacm/cl_zprim_form IMPLEMENTATION.
+CLASS /EACM/CL_ZPRIM_FORM IMPLEMENTATION.
+
 
   METHOD get_pdf.
     DATA(lo_fdp_api) = cl_fp_fdp_services=>get_instance(
@@ -95,7 +96,6 @@ CLASS /eacm/cl_zprim_form IMPLEMENTATION.
       WHERE bukrs = @iv_bukrs
         AND gjahr = @iv_gjahr
         AND zidfs = @iv_zidfs.
+    COMMIT WORK AND WAIT.
   ENDMETHOD.
-
 ENDCLASS.
-

@@ -9,7 +9,8 @@ ENDCLASS.
 
 
 
-CLASS /eacm/cl_fill_one_pdf IMPLEMENTATION.
+CLASS /EACM/CL_FILL_ONE_PDF IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
     TRY.
@@ -25,6 +26,4 @@ CLASS /eacm/cl_fill_one_pdf IMPLEMENTATION.
         out->write( lx_root->get_text( ) ).
     ENDTRY.
   ENDMETHOD.
-
 ENDCLASS.
-

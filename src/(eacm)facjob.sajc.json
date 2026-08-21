@@ -7,5 +7,19 @@
   },
   "generalInformation": {
     "className": "/EACM/FACJOB"
-  }
+  },
+  "parameters": [
+    {
+      "name": "P_BUKRS",
+      "title": "Società"
+    },
+    {
+      "name": "P_GJAHR",
+      "title": "Esercizio"
+    },
+    {
+      "name": "P_ZIDFS",
+      "title": "ID fattura"
+    }
+  ]
 }

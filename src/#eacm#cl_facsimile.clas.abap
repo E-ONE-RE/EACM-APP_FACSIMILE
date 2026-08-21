@@ -135,7 +135,7 @@ ENDCLASS.
 
 
 
-CLASS /eacm/cl_facsimile IMPLEMENTATION.
+CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
 
 
   METHOD generate.
@@ -149,6 +149,27 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
     facsimile_currency( ).
     counting_facsimiles( ).
     process_documents( ).
+
+    "/schedulazione stampa
+    GET TIME STAMP FIELD DATA(lv_now).
+
+    DATA(ls_start_info) =
+      VALUE cl_apj_rt_api=>ty_start_info(
+        timestamp = cl_abap_tstmp=>add_to_short(
+          tstmp = lv_now
+          secs  = 30 ) ).
+
+    TRY.
+        cl_apj_rt_api=>schedule_job(
+          EXPORTING
+            iv_job_template_name   = '/EACM/TMPL_FACJOB'
+            iv_job_text            = |Stampe facsimili di test { lv_now }|
+            is_start_info          = ls_start_info
+        ).
+      CATCH cx_apj_rt ##NO_HANDLER.
+        "handle exception
+    ENDTRY.
+    "\schedulazione stampa
 
   ENDMETHOD.
 
@@ -2152,6 +2173,7 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
 
   ENDMETHOD.
 
+
   METHOD get_iva_row.
     SELECT SINGLE kalsm, mwskz, zrtac, zdesc, pdatv, pdatb  "#EC WARNOK
       FROM /eacm/zpr14
@@ -2389,5 +2411,4 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
       ENDIF.
     ENDIF.
   ENDMETHOD.
-
 ENDCLASS.

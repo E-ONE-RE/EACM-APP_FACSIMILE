@@ -9,7 +9,8 @@ ENDCLASS.
 
 
 
-CLASS /eacm/cl_clear_one_pdf IMPLEMENTATION.
+CLASS /EACM/CL_CLEAR_ONE_PDF IMPLEMENTATION.
+
 
   METHOD if_oo_adt_classrun~main.
     UPDATE /eacm/zprim
@@ -22,6 +23,4 @@ CLASS /eacm/cl_clear_one_pdf IMPLEMENTATION.
 
     out->write( 'PDF cleared for S100 / 2026 / 0003.' ).
   ENDMETHOD.
-
 ENDCLASS.
-

@@ -13,7 +13,7 @@ ENDCLASS.
 
 
 
-CLASS /eacm/cl_prim_i_run IMPLEMENTATION.
+CLASS /EACM/CL_PRIM_I_RUN IMPLEMENTATION.
 
 
   METHOD if_rap_query_provider~select.
@@ -71,6 +71,7 @@ CLASS /eacm/cl_prim_i_run IMPLEMENTATION.
     io_response->set_data( lt_zprim ).
 
   ENDMETHOD.
+
 
   METHOD handle_paging.
     DATA(offset) = io_request->get_paging(  )->get_offset(  ).

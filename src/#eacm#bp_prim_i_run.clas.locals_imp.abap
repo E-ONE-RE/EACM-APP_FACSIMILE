@@ -824,6 +824,59 @@ CLASS lsc_PRIM_I_RUN IMPLEMENTATION.
                   AND zidrg = @ls_facdp_run-zidrg.
             ENDLOOP.
 
+
+            "/schedulazione stampa
+            GET TIME STAMP FIELD DATA(lv_now).
+
+            DATA(ls_start_info) =
+              VALUE cl_apj_rt_api=>ty_start_info(
+                timestamp = cl_abap_tstmp=>add_to_short(
+                  tstmp = lv_now
+                  secs  = 5 ) ).
+
+            DATA lt_job_parameters TYPE cl_apj_rt_api=>tt_job_parameter_value.
+            lt_job_parameters = VALUE #(
+              ( name = 'P_BUKRS'
+                t_value = VALUE #(
+                  ( sign   = 'I'
+                    option = 'EQ'
+                    low    = ls_prim_run-bukrs )
+                )
+              )
+
+              ( name = 'P_GJAHR'
+                t_value = VALUE #(
+                  ( sign   = 'I'
+                    option = 'EQ'
+                    low    = ls_prim_run-gjahr )
+                )
+              )
+
+              ( name = 'P_ZIDFS'
+                t_value = VALUE #(
+                  ( sign   = 'I'
+                    option = 'EQ'
+                    low    = ls_prim_run-zidfs )
+                )
+              )
+            ).
+
+            TRY.
+
+                cl_apj_rt_api=>schedule_job(
+                  EXPORTING
+                    iv_job_template_name   = '/EACM/TMPL_FACJOB'
+                    iv_job_text            = |Stampa fattura { ls_prim_run-bukrs }/{ ls_prim_run-gjahr }/{ ls_prim_run-zidfs }|
+                    is_start_info          = ls_start_info
+                    it_job_parameter_value = lt_job_parameters
+                ).
+
+              CATCH cx_apj_rt INTO DATA(lx_apj).
+                " Gestione errore
+                DATA(lv_error) = lx_apj->get_longtext( ).
+            ENDTRY.
+            "\schedulazione stampa
+
           ENDLOOP.
 
 *          "aggiornamento FACSPOS
@@ -871,6 +924,27 @@ CLASS lsc_PRIM_I_RUN IMPLEMENTATION.
 *                CONTINUE.
 *            ENDTRY.
 *          ENDLOOP.
+
+*          "/schedulazione stampa
+*          GET TIME STAMP FIELD DATA(lv_now).
+*
+*          DATA(ls_start_info) =
+*            VALUE cl_apj_rt_api=>ty_start_info(
+*              timestamp = cl_abap_tstmp=>add_to_short(
+*                tstmp = lv_now
+*                secs  = 30 ) ).
+*
+*          TRY.
+*              cl_apj_rt_api=>schedule_job(
+*                EXPORTING
+*                  iv_job_template_name   = '/EACM/TMPL_FACJOB'
+*                  iv_job_text            = |Stampe facsimili effettivi { lv_now }|
+*                  is_start_info          = ls_start_info
+*              ).
+*            CATCH cx_apj_rt ##NO_HANDLER.
+*              "handle exception
+*          ENDTRY.
+*          "\schedulazione stampa
 
         WHEN 'DELETE'.
           "cancellazione riga da DELETE
