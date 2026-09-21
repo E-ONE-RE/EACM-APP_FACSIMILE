@@ -1,22 +1,22 @@
 {
   "formatVersion": "2",
   "header": {
-    "description": "An SAP Fiori application.",
-    "originalLanguage": "en",
+    "description": "Generazione facsimile",
+    "originalLanguage": "it",
     "abapLanguageVersion": "cloudDevelopment"
   },
   "generalInformation": {
     "appType": "ui5",
     "catalogId": "SAP_TC_UI5_REPO_UIAD",
-    "targetMappingTitle": "{{eacm.facrun-maintain.flpTitle}}"
+    "targetMappingTitle": "Generazione facsimile"
   },
   "ui5AppDetails": {
-    "appId": "eacm.facrun"
+    "appId": "zfacrun"
   },
   "navigation": {
     "targetMappingId": "/EACM/FACRUN_UI5R_TM",
-    "semanticObject": "eacm.facrun",
-    "action": "maintain",
+    "semanticObject": "zfacrun",
+    "action": "display",
     "desktop": true,
     "tablet": true,
     "phone": true
@@ -27,7 +27,8 @@
       "tileType": "static",
       "isDefault": true,
       "standard": {
-        "title": "{{eacm.facrun-maintain.flpTitle}}"
+        "title": "Generazione facsimile",
+        "subtitle": "Generazione facsimile"
       }
     }
   ]

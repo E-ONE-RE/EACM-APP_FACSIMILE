@@ -135,7 +135,7 @@ ENDCLASS.
 
 
 
-CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
+CLASS /eacm/cl_facsimile IMPLEMENTATION.
 
 
   METHOD generate.
@@ -514,7 +514,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
 
     write_nosplit( ).
     write_split( ).
-    mingar_process( ). "DA FARE
+    mingar_process( ).
 
   ENDMETHOD.
 
@@ -577,7 +577,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
       ELSE.
         "Provv. maturate - in valuta società cambio dt doc
         "provvigione classica
-*        l_zprim-zimprv = l_pos-ziprv = <ln>-ziprvsf.
+*        l_zprim-zimprv = l_pos-ziprv = <ln>-/eacm/facdp_run.
         SELECT SUM( ziprvsf ), SUM( ziprvvs )
         FROM /EACM/I_facrunDPd
         WHERE bukrs = @ls_prv_nosplit-bukrs
@@ -603,7 +603,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
 
       IF ls_prv_nosplit-Anticipo = abap_true.
         SELECT zclpr, bukrs, mwskz, kalsm,
-            SUM( ziprvsf ) AS ziprv, SUM( zimansf ) AS ziprvvs,
+            SUM( zimansf ) AS ziprv, SUM( Zimanvs ) AS ziprvvs,
             @ls_prim_run-run_uuid  AS run_uuid,
              @ls_prim_run-waerk AS waerk
         FROM /EACM/I_facrunDPd
@@ -1200,6 +1200,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
           "ZMINGAR non deve essere convertito perchè è lui che decide la valuta del facimile
           ls_newfacpos-ziprv = l_mingar-zmingar.
           ls_newfacpos-zclpr = ls_faccomm-zclpr = l_mingar-zclpr_m.
+          ls_newfacpos-bukrs = l_mingar-bukrs.
           DELETE FROM /eacm/facpos_run
           WHERE run_uuid = @ls_zprim-run_uuid
           AND gjahr = @ls_zprim-gjahr
@@ -1257,6 +1258,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
           ENDTRY.
 
           ls_newfacpos-zclpr = ls_faccomm-zclpr = l_mingar-zclpr_m.
+          ls_newfacpos-bukrs = l_mingar-bukrs.
 
           DELETE FROM /eacm/facpos_run
           WHERE run_uuid = @ls_zprim-run_uuid
@@ -1397,7 +1399,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
           ENDTRY.
 
           ls_newfacpos-zclpr = ls_faccomm-zclpr = l_mingar-zclpr_cf.
-
+          ls_newfacpos-bukrs = l_mingar-bukrs.
           INSERT /eacm/facpos_run FROM @ls_newfacpos.
           INSERT /eacm/fac_mg_run FROM @ls_faccomm.
 
@@ -1440,7 +1442,7 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
           ENDTRY.
 
           ls_newfacpos-zclpr = ls_faccomm-zclpr = l_mingar-zclpr_cf.
-
+          ls_newfacpos-bukrs = l_mingar-bukrs.
           INSERT /eacm/facpos_run FROM @ls_newfacpos.
           INSERT /eacm/fac_mg_run FROM @ls_faccomm.
 
@@ -1460,7 +1462,10 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
         INTO @ls_zprim.
       IF sy-subrc = 0.
 
-        SELECT SUM( ziprv ) FROM /EACM/I_facrunDPd
+*        SELECT SUM( ziprv ) FROM /EACM/I_facrunDPd
+*        WHERE run_uuid = @ls_zprim-run_uuid
+*        INTO @lv_sum_ziprv.
+        SELECT SUM( ziprv ) FROM /eacm/facpos_run
         WHERE run_uuid = @ls_zprim-run_uuid
         INTO @lv_sum_ziprv.
 
@@ -2066,20 +2071,26 @@ CLASS /EACM/CL_FACSIMILE IMPLEMENTATION.
 *        "cambio da valuta documento a valuta di stampa facsimile
 *        e_change_doc_fs  = e_commission-zkurrfp.
 
-    e_facpos-msatz = get_tax_rate( i_bukrs = i_zprim-bukrs i_mwskz = e_facpos-mwskz ).
+
 
     DATA lv_facdp_run TYPE /eacm/facdp_run.
     MOVE-CORRESPONDING e_commission TO lv_facdp_run.
     lv_facdp_run-naz_age = get_naz_age( EXPORTING i_dtini = i_fine_periodo i_dtfin = i_fine_periodo i_lifnr = lv_facdp_run-lifnr ).
 
-    lv_facdp_run-naz_cli = get_naz_cli( EXPORTING i_dtini = i_fine_periodo i_dtfin = i_fine_periodo i_kunrg = space ).
+    SELECT SINGLE FROM /eacm/zpraa
+    FIELDS kunnr
+    WHERE zcdaz = @i_zprim-zcdaz
+    INTO @DATA(lv_kunnnr).
+    lv_facdp_run-naz_cli = get_naz_cli( EXPORTING i_dtini = i_fine_periodo i_dtfin = i_fine_periodo i_kunrg = lv_kunnnr ).
     lv_facdp_run-naz_we = get_naz_we( EXPORTING i_dtini = i_fine_periodo i_dtfin = i_fine_periodo i_zdest = space ).
     lv_facdp_run-naz_soc = get_naz_soc( EXPORTING i_dtini = i_fine_periodo i_dtfin = i_fine_periodo i_bukrs = lv_facdp_run-bukrs ).
 
     get_iva_row(  CHANGING c_facdp =  lv_facdp_run ).
     e_commission-kalsm = lv_facdp_run-kalsm.
-    e_commission-mwskz = lv_facdp_run-mwskz.
+    e_commission-mwskz = e_facpos-mwskz = lv_facdp_run-mwskz.
     e_commission-ritac = lv_facdp_run-ritac.
+
+    e_facpos-msatz = get_tax_rate( i_bukrs = i_zprim-bukrs i_mwskz = e_facpos-mwskz ).
 
   ENDMETHOD.
 

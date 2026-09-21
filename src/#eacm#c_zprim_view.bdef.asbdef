@@ -1,6 +1,8 @@
 projection;
 strict ( 2 );
 
+use side effects;
+
 define behavior for /EACM/C_ZPRIM_VIEW //alias <alias_name>
 {
   use create;
@@ -15,6 +17,7 @@ define behavior for /EACM/C_ZPRIM_VIEW //alias <alias_name>
   use action onSendMail;
 //  use action onDelete;
 //  use action onPosting;
+use action onPrint;
 
 }
 

@@ -1,7 +1,7 @@
 @Metadata.layer: #CUSTOMER
 @UI.headerInfo: {
   typeName: 'Facsimile',
-  typeNamePlural: 'Facsimili',
+  typeNamePlural: 'Facsimiles',
   title: { value: 'RunUuid' }
 }
 annotate entity /EACM/PRIM_C_RUN with
@@ -12,14 +12,14 @@ annotate entity /EACM/PRIM_C_RUN with
       id: 'GeneralInfo',
       purpose: #STANDARD,
       type: #IDENTIFICATION_REFERENCE,
-      label: 'Dati generali',
+      label: 'General information',
       position: 10
     },
     {
       id: 'Positions',
       purpose: #STANDARD,
       type: #LINEITEM_REFERENCE,
-      label: 'Posizioni',
+      label: 'Positions',
       position: 20,
       targetElement: '_Positions',
       targetQualifier: 'NoNavigation'
@@ -39,7 +39,7 @@ annotate entity /EACM/PRIM_C_RUN with
       id: 'idRIT',
       purpose: #STANDARD,
       type: #COLLECTION,
-      label: 'Ritenuta d''acconto',
+      label: 'Withholding tax',
       position: 40
     },
     {
@@ -52,7 +52,7 @@ annotate entity /EACM/PRIM_C_RUN with
       id: 'IVA',
       purpose: #STANDARD,
       type: #LINEITEM_REFERENCE,
-      label: 'IVA',
+      label: 'VAT',
       position: 50,
       targetElement: '_IVA'
     }
@@ -61,8 +61,8 @@ annotate entity /EACM/PRIM_C_RUN with
 
   //  //@UI.identification: [ { position: 10 } ]
   @UI.lineItem: [
-    { position: 10, type : #FOR_ACTION, dataAction: 'onGenerate', label: 'Genera', requiresContext: true },
-    { position: 11, type : #FOR_ACTION, dataAction: 'onSave', label: 'Salva', requiresContext: true }
+    { position: 10, type : #FOR_ACTION, dataAction: 'onGenerate', label: 'Generate', requiresContext: true },
+    { position: 11, type : #FOR_ACTION, dataAction: 'onSave', label: 'Save', requiresContext: true }
   ]
   RunUuid;
   //  @UI.selectionField: [{ position: 20 }]

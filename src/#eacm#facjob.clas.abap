@@ -20,6 +20,10 @@ CLASS /eacm/facjob DEFINITION
       IMPORTING i_bukrs TYPE bukrs
                 i_gjahr TYPE gjahr
                 i_zidfs TYPE /eacm/zidfs.
+    METHODS facsimili_zprim_dett
+      IMPORTING i_bukrs TYPE bukrs
+                i_gjahr TYPE gjahr
+                i_zidfs TYPE /eacm/zidfs.
     METHODS facsimili_preview.
     METHODS prage_rpd.
     METHODS prage_rpc.
@@ -358,7 +362,82 @@ CLASS /eacm/facjob IMPLEMENTATION.
       prage_rpc( ).
     ELSE.
       facsimili_zprim( EXPORTING i_bukrs = p_bukrs i_gjahr = p_gjahr i_zidfs = p_zidfs ).
+      facsimili_zprim_dett( EXPORTING i_bukrs = p_bukrs i_gjahr = p_gjahr i_zidfs = p_zidfs ).
     ENDIF.
 
   ENDMETHOD.
+
+  METHOD facsimili_zprim_dett.
+
+    DATA lv_now TYPE timestampl.
+    DATA lv_start TYPE timestampl.
+    DATA is_persistent TYPE abap_bool.
+
+    is_persistent = abap_false.
+    GET TIME STAMP FIELD lv_start.
+
+    WHILE is_persistent = abap_false.
+
+      SELECT SINGLE FROM /eacm/zprim
+      FIELDS bukrs, gjahr, zidfs, file_name_d
+      WHERE bukrs = @i_bukrs
+      AND gjahr = @i_gjahr
+      AND zidfs = @i_zidfs
+*    AND file_name_d = @space
+     INTO  @DATA(ls_zprim).
+      IF sy-subrc = 0.
+        is_persistent = abap_true.
+        EXIT.
+      ENDIF.
+
+      " Controllo timeout
+      GET TIME STAMP FIELD lv_now.
+
+      DATA(lv_elapsed_seconds) =
+        cl_abap_tstmp=>subtract(
+          tstmp1 = lv_now
+          tstmp2 = lv_start
+        ).
+
+      IF lv_elapsed_seconds >= 3600.
+        " Timeout dopo 1 ora
+        EXIT.
+      ENDIF.
+
+      " Evita di interrogare continuamente il DB
+      WAIT UP TO 5 SECONDS.
+
+    ENDWHILE.
+
+    IF ls_zprim IS NOT INITIAL AND ls_zprim-file_name_d = space.
+
+      UPDATE /eacm/zprim
+      SET file_name_d = 'xxGENxx'
+      WHERE bukrs = @ls_zprim-bukrs
+      AND gjahr = @ls_zprim-gjahr
+      AND zidfs = @ls_zprim-zidfs
+      AND file_name_d = @space.
+      IF sy-subrc = 0.
+        COMMIT WORK AND WAIT.
+        TRY.
+            /eacm/cl_zprim_form=>generate_and_store_dett(
+              iv_bukrs = ls_zprim-bukrs
+              iv_gjahr = ls_zprim-gjahr
+              iv_zidfs = ls_zprim-zidfs
+            ).
+          CATCH cx_fp_fdp_error cx_fp_form_reader cx_fp_ads_util.
+            "handle exception
+            UPDATE /eacm/zprim
+            SET file_name_d = @space
+            WHERE bukrs = @ls_zprim-bukrs
+            AND gjahr = @ls_zprim-gjahr
+            AND zidfs = @ls_zprim-zidfs.
+            COMMIT WORK AND WAIT.
+        ENDTRY.
+      ENDIF.
+
+    ENDIF.
+
+  ENDMETHOD.
+
 ENDCLASS.

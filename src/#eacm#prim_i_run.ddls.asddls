@@ -1,6 +1,6 @@
 @AccessControl.authorizationCheck: #NOT_REQUIRED
 @EndUserText.label: 'Generazione facsimile - ZPRIM'
-@Metadata.ignorePropagatedAnnotations: true
+//@Metadata.ignorePropagatedAnnotations: true
 define root view entity /EACM/PRIM_I_RUN
   as select from /eacm/prim_run as prim
     inner join   /eacm/t001     as t001 on t001.bukrs = prim.bukrs

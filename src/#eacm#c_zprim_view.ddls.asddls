@@ -85,6 +85,14 @@ define root view entity /EACM/C_ZPRIM_VIEW
 //        contentDispositionPreference: #INLINE
       }
       Attachment,
+      FileNameD,
+      @Semantics.largeObject: {
+        mimeType: 'MimeType',
+        fileName: 'FileNameD',
+        contentDispositionPreference: #ATTACHMENT
+//        contentDispositionPreference: #INLINE
+      }
+      AttachmentD,
       /* Associations */
       _Enasarco  : redirected to composition child /EACM/C_ZPRFAC_VIEW,
       _IVA       : redirected to composition child /EACM/C_FACIVA_VIEW,

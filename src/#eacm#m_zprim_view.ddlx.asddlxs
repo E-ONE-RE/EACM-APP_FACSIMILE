@@ -1,7 +1,7 @@
 @Metadata.layer: #CUSTOMER
 @UI.headerInfo: {
   typeName: 'Facsimile',
-  typeNamePlural: 'Facsimili',
+  typeNamePlural: 'Facsimiles',
   title: { value: 'Zidfs' }
 }
 annotate entity /EACM/C_ZPRIM_VIEW with
@@ -12,14 +12,14 @@ annotate entity /EACM/C_ZPRIM_VIEW with
       id: 'GeneralInfo',
       purpose: #STANDARD,
       type: #IDENTIFICATION_REFERENCE,
-      label: 'Dati generali',
+      label: 'General information',
       position: 10
     },
     {
       id: 'Positions',
       purpose: #STANDARD,
       type: #LINEITEM_REFERENCE,
-      label: 'Posizioni',
+      label: 'Positions',
       position: 20,
       targetElement: '_Positions',
       targetQualifier: 'NoNavigation'
@@ -39,7 +39,7 @@ annotate entity /EACM/C_ZPRIM_VIEW with
       id: 'idRIT',
       purpose: #STANDARD,
       type: #COLLECTION,
-      label: 'Ritenuta d''acconto',
+      label: 'Withholding tax',
       position: 40
     },
     {
@@ -52,7 +52,7 @@ annotate entity /EACM/C_ZPRIM_VIEW with
       id: 'IVA',
       purpose: #STANDARD,
       type: #LINEITEM_REFERENCE,
-      label: 'IVA',
+      label: 'VAT',
       position: 50,
       targetElement: '_IVA'
     }
@@ -70,17 +70,19 @@ annotate entity /EACM/C_ZPRIM_VIEW with
   ]
   //  @UI.lineItem: [ { position: 10 } ]
   @UI.lineItem: [
-    { position: 10, type : #FOR_ACTION, dataAction: 'onPosting', label: 'Check Posting', requiresContext: true },
-    { position: 12, type : #FOR_ACTION, dataAction: 'onDownload', label: 'Download PDFs', requiresContext: true },
-    { position: 14, type : #FOR_ACTION, dataAction: 'onSendMail', label: 'Send mail', requiresContext: true },
-    { position: 16, type : #FOR_ACTION, dataAction: 'onDelete', label: 'Delete', requiresContext: true }
+//    { position: 10, type : #FOR_ACTION, dataAction: 'onPosting', label: 'Check Posting', requiresContext: true },
+//    { position: 12, type : #FOR_ACTION, dataAction: 'onDownload', label: 'Download PDFs', requiresContext: true },
+//    { position: 14, type : #FOR_ACTION, dataAction: 'onSendMail', label: 'Send mail', requiresContext: true },
+//    { position: 16, type : #FOR_ACTION, dataAction: 'onDelete', label: 'Delete', requiresContext: true },
+    { position: 17, type : #FOR_ACTION, dataAction: 'onPrint', label: 'Regenerate print', requiresContext: true }
   ]
   @UI.identification: [ { position: 10 } ]
   Bukrs;
   @UI.lineItem: [ { position: 20 } ]
   @UI.identification: [ { position: 20 } ]
-  Gjahr;
   @UI.selectionField: [{ position: 20 }]
+  Gjahr;
+  @UI.selectionField: [{ position: 30 }]
   @Consumption.valueHelpDefinition: [
     {
       entity: {
@@ -92,7 +94,7 @@ annotate entity /EACM/C_ZPRIM_VIEW with
   ]
   @UI.lineItem: [ { position: 30 } ]
   Zidfs;
-  @UI.selectionField: [{ position: 50 }]
+  @UI.selectionField: [{ position: 40 }]
   @Consumption.valueHelpDefinition: [
   {
     entity: {
@@ -102,10 +104,10 @@ annotate entity /EACM/C_ZPRIM_VIEW with
     useForValidation: true
   }
   ]
-  @UI.lineItem: [ { position: 50 } ]
-  @UI.identification: [ { position: 55 } ]
+  @UI.lineItem: [ { position: 40 } ]
+  @UI.identification: [ { position: 40 } ]
   Lifnr;
-  @UI.selectionField: [{ position: 30 }]
+  @UI.selectionField: [{ position: 50 }]
   @Consumption.valueHelpDefinition: [
     {
       entity: {
@@ -115,15 +117,15 @@ annotate entity /EACM/C_ZPRIM_VIEW with
       useForValidation: true
     }
   ]
-  @UI.lineItem: [ { position: 60 } ]
-  @UI.identification: [ { position: 30 } ]
+  @UI.lineItem: [ { position: 50 } ]
+  @UI.identification: [ { position: 50 } ]
   Zamcf;
   @UI.lineItem: [ { position: 70 } ]
   @UI.identification: [ { position: 60 } ]
   Waerk;
   //    @Semantics.amount.currencyCode : 'Waerk'
   @UI.lineItem: [ { position: 80 } ]
-  @UI.identification: [ { position: 70, importance: #HIGH } ]
+  @UI.identification: [ { position: 80, importance: #HIGH } ]
   Ztotfs;
   //    @Semantics.amount.currencyCode : 'Waerk'
   //    Zimprv,
@@ -155,7 +157,7 @@ annotate entity /EACM/C_ZPRIM_VIEW with
   //    Zcont,
   //    Zrich,
   //    Zanticipo,
-  @UI.selectionField: [{ position: 40 }]
+  @UI.selectionField: [{ position: 90 }]
   @Consumption.valueHelpDefinition: [
   {
     entity: {
@@ -165,10 +167,10 @@ annotate entity /EACM/C_ZPRIM_VIEW with
     useForValidation: true
   }
   ]
-  @UI.identification: [ { position: 40 } ]
+  @UI.identification: [ { position: 90 } ]
   Zcdaz;
-  @UI.identification: [ { position: 50 } ]
-  @UI.selectionField: [{ position: 50 }]
+  @UI.identification: [ { position: 10 } ]
+  @UI.selectionField: [{ position: 100 }]
   Name1;
   //    Znzag,
   //    Cbdat,
@@ -209,8 +211,13 @@ annotate entity /EACM/C_ZPRIM_VIEW with
 
   @UI.hidden: true
   FileName;
-  @UI.lineItem: [{ position: 100 }]
+  @UI.lineItem: [{ position: 101 }]
   Attachment;
+  @UI.hidden: true
+  FileNameD;
+  @UI.hidden: false
+//  @UI.lineItem: [{ position: 102 }]
+  AttachmentD;
   //    /* Associations */
   //    _Enasarco: redirected to composition child /EACM/C_ZPRFAC_VIEW,
   //    _IVA: redirected to composition child /EACM/C_FACIVA_VIEW,

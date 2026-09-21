@@ -5,6 +5,8 @@ CLASS /eacm/cl_fill_one_pdf DEFINITION
 
   PUBLIC SECTION.
     INTERFACES if_oo_adt_classrun.
+protected section.
+private section.
 ENDCLASS.
 
 

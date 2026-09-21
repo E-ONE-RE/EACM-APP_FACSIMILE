@@ -1,4 +1,6 @@
 CLASS /eacm/bp_prim_i_run DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF /eacm/prim_i_run.
+protected section.
+private section.
 ENDCLASS.
 
 

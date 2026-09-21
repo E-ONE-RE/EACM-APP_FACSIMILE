@@ -1,0 +1,7 @@
+@EndUserText.label: 'Stampa di dettaglio del facsimile'
+@ObjectModel.leadingEntity.name: '/EACM/I_FACDETT_MAIN'
+define service /EACM/FACDETT_SRV {
+  expose /EACM/I_FACDETT_MAIN as main;
+  expose /EACM/I_FACDETT_CLI  as cliente;
+  expose /EACM/I_FACDETT_LIST as lista;
+}

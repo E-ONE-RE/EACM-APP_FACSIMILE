@@ -1,14 +1,14 @@
 {
   "formatVersion": "2",
   "header": {
-    "description": "{{appDescription}}",
+    "description": "Facsimile Management",
     "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
   },
   "generalInformation": {
     "appType": "ui5",
     "catalogId": "SAP_TC_UI5_REPO_UIAD",
-    "targetMappingTitle": "Agent Facsimile Manager"
+    "targetMappingTitle": "Facsimile Management"
   },
   "ui5AppDetails": {
     "appId": "eacm.facview"
@@ -16,7 +16,7 @@
   "navigation": {
     "targetMappingId": "/EACM/FACVIEW_UI5R_TM",
     "semanticObject": "zeacm_FACVIEW",
-    "action": "manace",
+    "action": "manage",
     "desktop": true,
     "tablet": true,
     "phone": true
@@ -27,7 +27,8 @@
       "tileType": "static",
       "isDefault": true,
       "standard": {
-        "title": "Agent Facsimile Manager"
+        "title": "Facsimile Management",
+        "subtitle": "Facsimile Management"
       }
     }
   ]

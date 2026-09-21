@@ -93,7 +93,15 @@ define view entity /EACM/I_facrunDPd
           target_currency    => t001.waers,
           exchange_rate_date => run.dtchange,
           exchange_rate_type => 'M'
-      )            as Ziprvvs
+      )            as Ziprvvs,
+      @Semantics.amount.currencyCode: 'Zwaersp'
+      currency_conversion(
+          amount             => dp.ziman,
+          source_currency    => dp.waerk,
+          target_currency    => t001.waers,
+          exchange_rate_date => run.dtchange,
+          exchange_rate_type => 'M'
+      )            as Zimanvs
 
 }
 
