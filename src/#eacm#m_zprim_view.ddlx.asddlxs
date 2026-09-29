@@ -211,12 +211,13 @@ annotate entity /EACM/C_ZPRIM_VIEW with
 
   @UI.hidden: true
   FileName;
-  @UI.lineItem: [{ position: 101 }]
+  @UI.lineItem: [{ position: 101, label: 'Facsimile'} ]
   Attachment;
   @UI.hidden: true
   FileNameD;
   @UI.hidden: false
 //  @UI.lineItem: [{ position: 102 }]
+ @UI.lineItem: [{ label: 'Facsimile detail'} ]
   AttachmentD;
   //    /* Associations */
   //    _Enasarco: redirected to composition child /EACM/C_ZPRFAC_VIEW,

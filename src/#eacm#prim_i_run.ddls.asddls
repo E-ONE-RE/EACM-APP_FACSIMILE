@@ -68,6 +68,8 @@ define root view entity /EACM/PRIM_I_RUN
       t001.region                                         as Region,
       t001.stceg                                          as Stceg,
       t001.stcd1                                          as Stcd1,
+      prim.file_name_d                                    as FileNameD,
+      prim.attachment_d                                   as AttachmentD,
       _Positions,
       _Enasarco,
       _IVA,

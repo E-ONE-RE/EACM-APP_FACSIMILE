@@ -817,7 +817,7 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
       FROM /eacm/zprar
       WHERE zclpr IN @rg_zclpr
         AND zcdaz = @i_zprim-zcdaz
-        AND mwskz IN @rg_mwskz
+*        AND mwskz IN @rg_mwskz 23.09.2026
         AND zamco LE @gv_competence
         AND zidfs EQ @space
         AND ztpan NE 'C'
@@ -895,14 +895,14 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
       SELECT SINGLE *
       FROM /eacm/facpos_run
       WHERE run_uuid = @i_zprim-run_uuid
-        AND mwskz = @l_zprar-mwskz
+*        AND mwskz = @l_zprar-mwskz 23.09.2026
         AND zclpr = 'RECANT'
         INTO @DATA(l_facpos_save).
       IF sy-subrc <> 0.
         SELECT SINGLE *                                     "#EC WARNOK
         FROM /eacm/facpos_run
         WHERE run_uuid = @i_zprim-run_uuid
-          AND mwskz = @l_zprar-mwskz
+*          AND mwskz = @l_zprar-mwskz 23.09.2026
           INTO @l_facpos_save.
         IF sy-subrc = 0.
           CLEAR: l_facpos_save-ziprv, l_facpos_save-ziprvvs.
@@ -912,6 +912,7 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
         l_facpos_save-zclpr = 'RECANT'.
 *        l_zprar-zirecsf = l_zprar-zirecsf * -1.
 *        l_zprar-zirecvs = l_zprar-zirecvs * -1.
+        l_facpos_save-mwskz = l_facpos_save-mwskz. "23.09.2026
         l_facpos_save-ziprv += l_zprar-zirecsf * -1.
         l_facpos_save-ziprvvs += l_zprar-zirecvs * -1.
         MODIFY /eacm/facpos_run FROM @l_facpos_save.
@@ -1004,7 +1005,19 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
     INTO TABLE @DATA(lt_facpos).
 
     DATA ls_faciva TYPE /eacm/faciva_run.
-    DATA lt_faciva TYPE STANDARD TABLE OF /eacm/faciva_run.
+*    DATA lt_faciva TYPE STANDARD TABLE OF /eacm/faciva_run.
+    DATA lt_faciva TYPE HASHED TABLE OF /eacm/faciva_run
+      WITH UNIQUE KEY
+        client
+        run_uuid
+        bukrs
+        gjahr
+        zidfs
+        mwskz
+        kalsm
+        percentuale
+        waerk.
+
     LOOP AT lt_facpos INTO DATA(ls_facpos).
 
       CLEAR ls_faciva.
@@ -2146,6 +2159,16 @@ CLASS /eacm/cl_facsimile IMPLEMENTATION.
       WHERE dp~run_uuid = @i_run_uuid
         AND cl~zenas = @abap_false
         INTO ( @e_zimco, @e_zimcoe ).
+      "valuta facsimile - valuta società
+*      SELECT SUM( ziprv ), SUM( ziprvvs )
+*      FROM /eacm/facpos_run AS dp
+*      INNER JOIN /eacm/zpr08 AS cl
+*      ON  cl~bukrs = dp~bukrs
+*      AND cl~zclpr = dp~zclpr
+*      WHERE dp~run_uuid = @i_run_uuid
+*        AND cl~zenas = @abap_false
+*        INTO ( @e_zimco, @e_zimcoe ).
+
     ELSE.
 
       "valuta facsimile - valuta società

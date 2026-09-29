@@ -642,7 +642,9 @@ CLASS lsc_PRIM_I_RUN IMPLEMENTATION.
           LOOP AT lhc_PRIM_I_RUN=>gt_zprim_run INTO DATA(ls_update).
             UPDATE /eacm/prim_run
               SET run_status = @ls_update-run_status,
-                  zidfs      = @ls_update-zidfs
+                  zidfs      = @ls_update-zidfs,
+                  file_name  = @space,
+                  attachment = @space
               WHERE run_uuid = @ls_update-run_uuid
               AND zidfs = 0.
             IF sy-subrc = 0.

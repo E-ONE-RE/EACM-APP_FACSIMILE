@@ -1,14 +1,14 @@
 {
   "formatVersion": "2",
   "header": {
-    "description": "Generazione facsimile",
-    "originalLanguage": "it",
+    "description": "Facsimile generation",
+    "originalLanguage": "en",
     "abapLanguageVersion": "cloudDevelopment"
   },
   "generalInformation": {
     "appType": "ui5",
     "catalogId": "SAP_TC_UI5_REPO_UIAD",
-    "targetMappingTitle": "Generazione facsimile"
+    "targetMappingTitle": "Facsimile generation"
   },
   "ui5AppDetails": {
     "appId": "zfacrun"
@@ -27,8 +27,8 @@
       "tileType": "static",
       "isDefault": true,
       "standard": {
-        "title": "Generazione facsimile",
-        "subtitle": "Generazione facsimile"
+        "title": "Facsimile generation",
+        "subtitle": "Facsimile generation"
       }
     }
   ]

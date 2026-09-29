@@ -192,6 +192,13 @@ CLASS /eacm/cl_zprim_form IMPLEMENTATION.
       WHERE bukrs = @iv_bukrs
         AND gjahr = @iv_gjahr
         AND zidfs = @iv_zidfs.
+    UPDATE /eacm/prim_run
+      SET file_name  = @lv_file_name,
+          mime_type  = 'application/pdf',
+          attachment = @lv_pdf
+      WHERE bukrs = @iv_bukrs
+        AND gjahr = @iv_gjahr
+        AND zidfs = @iv_zidfs.
     COMMIT WORK AND WAIT.
   ENDMETHOD.
 
@@ -228,6 +235,13 @@ CLASS /eacm/cl_zprim_form IMPLEMENTATION.
     DATA(lv_file_name) = |RIEP-{ ls_zprim-zcdaz }-{ lv_vkorg }-{ ls_zprim-zamcf }-{ iv_zidfs }.pdf|.
 
     UPDATE /eacm/zprim
+      SET file_name_d  = @lv_file_name,
+          mime_type  = 'application/pdf',
+          attachment_d = @lv_pdf
+      WHERE bukrs = @iv_bukrs
+        AND gjahr = @iv_gjahr
+        AND zidfs = @iv_zidfs.
+    UPDATE /eacm/prim_run
       SET file_name_d  = @lv_file_name,
           mime_type  = 'application/pdf',
           attachment_d = @lv_pdf

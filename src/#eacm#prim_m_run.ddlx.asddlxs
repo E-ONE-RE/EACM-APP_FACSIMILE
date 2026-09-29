@@ -201,7 +201,8 @@ annotate entity /EACM/PRIM_C_RUN with
   @UI.identification: [ { position: 190 } ]
   @UI.lineItem: [ { position: 190 } ]
   Ztotfs;
-  @UI.lineItem: [ { position: 200 } ]
+  @UI.lineItem: [ { position: 200, label: 'Facsimile' } ]
   Attachment;
-
+ @UI.lineItem: [{ label: 'Facsimile detail'} ]
+  AttachmentD;
 }

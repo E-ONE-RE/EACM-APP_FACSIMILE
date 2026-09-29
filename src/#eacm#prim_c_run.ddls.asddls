@@ -47,6 +47,14 @@ define root view entity /EACM/PRIM_C_RUN
         contentDispositionPreference: #ATTACHMENT
       }
       Attachment,
+      FileNameD,
+      @Semantics.largeObject: {
+        mimeType: 'MimeType',
+        fileName: 'FileNameD',
+        contentDispositionPreference: #ATTACHMENT
+//        contentDispositionPreference: #INLINE
+      }
+      AttachmentD,
       Butxt,
       City,
       Post_code,
