@@ -25,8 +25,7 @@ CLASS /eacm/facjob DEFINITION
                 i_gjahr TYPE gjahr
                 i_zidfs TYPE /eacm/zidfs.
     METHODS facsimili_preview.
-    METHODS prage_rpd.
-    METHODS prage_rpc.
+
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -39,10 +38,6 @@ CLASS /eacm/facjob DEFINITION
         cx_fp_form_reader
         cx_fp_ads_util.
 
-*    METHODS facsimili_zprim.
-*    METHODS facsimili_preview.
-*    METHODS prage_rpd.
-*    METHODS prage_rpc.
 ENDCLASS.
 
 
@@ -210,156 +205,10 @@ CLASS /eacm/facjob IMPLEMENTATION.
 
   ENDMETHOD.
 
-
-  METHOD prage_rpc.
-
-*Stampa PRAGE - tabella /eacm/rpc
-
-
-    SELECT FROM /eacm/rpc
-    FIELDS *
-    WHERE filename = @space
-    INTO TABLE @DATA(lt_rpc).
-
-    DATA(lc_rpc) = NEW /eacm/cl_rpc( ).
-    DATA lv_mm TYPE n LENGTH 2.
-
-    LOOP AT lt_rpc INTO DATA(ls_rpc).
-
-      UPDATE /eacm/rpc
-      SET filename = 'xxGENxx'
-      WHERE bukrs = @ls_rpc-bukrs
-        AND fkdat_yyyy  = @ls_rpc-fkdat_yyyy
-        AND fkdat_mm = @ls_rpc-fkdat_mm
-        AND vkorg = @ls_rpc-vkorg
-        AND zcdaz = @ls_rpc-zcdaz
-        AND filename = @space.
-      IF sy-subrc = 0.
-        COMMIT WORK AND WAIT.
-
-        ls_rpc-mime_type = 'application/pdf'.
-        lv_mm = ls_rpc-fkdat_mm.
-
-
-        IF ls_rpc-zcdaz IS INITIAL AND ls_rpc-vkorg IS INITIAL.
-          "completo
-          ls_rpc-filename = |PRAGE4_ALL_{ lv_mm }{ ls_rpc-fkdat_yyyy }.pdf|.
-          lc_rpc->pdf_completo(
-            CHANGING
-              c_rpc = ls_rpc
-          ).
-        ELSE.
-
-          IF ls_rpc-zcdaz IS INITIAL.
-            "settore
-            ls_rpc-filename = |PRAGE4_{ ls_rpc-vkorg(3) }_{ lv_mm }{ ls_rpc-fkdat_yyyy }.pdf|.
-            lc_rpc->pdf_settori(
-              CHANGING
-                c_rpc = ls_rpc
-            ).
-          ELSE.
-            "agente
-            ls_rpc-filename = |PRAGE5_{ ls_rpc-zcdaz }_{ lv_mm }{ ls_rpc-fkdat_yyyy }.pdf|.
-            lc_rpc->pdf_agente(
-              CHANGING
-                c_rpc = ls_rpc
-            ).
-          ENDIF.
-
-        ENDIF.
-
-        IF ls_rpc-attachment IS INITIAL.
-          CLEAR ls_rpc-filename.
-        ENDIF.
-        UPDATE /eacm/rpc FROM @ls_rpc.
-        COMMIT WORK AND WAIT.
-      ENDIF.
-    ENDLOOP.
-
-
-  ENDMETHOD.
-
-
-  METHOD prage_rpd.
-
-*Stampa PRAGE - tabella /eacm/rpd
-
-
-    SELECT FROM /eacm/rpd
-    FIELDS *
-    WHERE filename = @space
-    INTO TABLE @DATA(lt_rpd).
-
-    DATA(lc_rpd) = NEW /eacm/cl_rpd( ).
-    DATA lv_mm TYPE n LENGTH 2.
-
-    LOOP AT lt_rpd INTO DATA(ls_rpd).
-
-      UPDATE /eacm/rpd
-      SET filename = 'xxGENxx'
-      WHERE bukrs = @ls_rpd-bukrs
-        AND fkdat_yyyy  = @ls_rpd-fkdat_yyyy
-        AND fkdat_mm = @ls_rpd-fkdat_mm
-        AND vkorg = @ls_rpd-vkorg
-        AND zcdaz = @ls_rpd-zcdaz
-        AND filename = @space.
-      IF sy-subrc = 0.
-        COMMIT WORK AND WAIT.
-
-        ls_rpd-mime_type = 'application/pdf'.
-        lv_mm = ls_rpd-fkdat_mm.
-
-        IF ls_rpd-zcdaz IS INITIAL.
-          IF ls_rpd-vkorg IS INITIAL AND ls_rpd-zcdaz IS INITIAL.
-            "completo
-            ls_rpd-filename = |PRAGE3_{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
-            lc_rpd->pdf_completo(
-              CHANGING
-                c_rpd = ls_rpd
-            ).
-          ELSEIF ls_rpd-vkorg IS NOT INITIAL.
-            "settore
-            ls_rpd-filename = |PRAGE7_{ ls_rpd-vkorg }{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
-            lc_rpd->pdf_settori(
-              CHANGING
-                c_rpd = ls_rpd
-            ).
-          ENDIF.
-        ELSE. "IF ls_rpd-zcdaz IS NOT INITIAL.
-          "agente
-          DATA(lv_strage) = |{ ls_rpd-zcdaz }%|.
-          SELECT SINGLE FROM /eacm/zpraa
-          FIELDS kunnr
-          WHERE zcdaz LIKE @lv_strage
-          INTO @DATA(lv_kunnr).
-          IF lv_kunnr IS NOT INITIAL.
-            ls_rpd-filename = |{ lv_kunnr }_A_{ ls_rpd-bukrs }_#_1_PROVV_CALC_{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
-          ELSE.
-            ls_rpd-filename = |NA_{ ls_rpd-zcdaz }_{ ls_rpd-bukrs }_#_NO_ZPRAA_PRAGE3_{ lv_mm }{ ls_rpd-fkdat_yyyy }.pdf|.
-          ENDIF.
-
-          lc_rpd->pdf_agente(
-            CHANGING
-              c_rpd = ls_rpd
-          ).
-        ENDIF.
-
-        IF ls_rpd-attachment IS INITIAL.
-          CLEAR ls_rpd-filename.
-        ENDIF.
-        UPDATE /eacm/rpd FROM @ls_rpd.
-        COMMIT WORK AND WAIT.
-      ENDIF.
-    ENDLOOP.
-  ENDMETHOD.
-
-
   METHOD if_apj_rt_run~execute.
 
     IF p_zidfs IS INITIAL.
       facsimili_preview( ).
-      prage_rpd( ).
-      prage_rpc( ).
     ELSE.
       facsimili_zprim( EXPORTING i_bukrs = p_bukrs i_gjahr = p_gjahr i_zidfs = p_zidfs ).
       facsimili_zprim_dett( EXPORTING i_bukrs = p_bukrs i_gjahr = p_gjahr i_zidfs = p_zidfs ).
