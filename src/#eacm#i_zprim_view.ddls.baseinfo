@@ -3,6 +3,7 @@
 {
 "FROM":
 [
+"/EACM/ZPRAA",
 "/EACM/ZPRIM"
 ],
 "ASSOCIATED":

@@ -2,87 +2,91 @@
 @EndUserText.label: 'Visualizzazione Facsimili'
 @Metadata.ignorePropagatedAnnotations: true
 define root view entity /EACM/I_ZPRIM_VIEW
-  as select from /eacm/zprim
+  as select from /eacm/zprim as zprim
+
+    inner join   /eacm/zpraa as zpraa on zprim.zcdaz = zpraa.zcdaz
+  //    left outer join /eacm/bp_cache as bp on zprim.lifnr = bp.business_partner
   composition [0..*] of /EACM/I_FACSPOS_VIEW as _Positions
   composition [0..*] of /EACM/I_ZPRFAC_VIEW  as _Enasarco
   composition [0..*] of /EACM/I_FACIVA_VIEW  as _IVA
 {
-  key bukrs                                 as Bukrs,
-  key gjahr                                 as Gjahr,
-  key zidfs                                 as Zidfs,
-      lifnr                                 as Lifnr,
-      zamcf                                 as Zamcf,
-      waerk                                 as Waerk,
+  key zprim.bukrs                                       as Bukrs,
+  key zprim.gjahr                                       as Gjahr,
+  key zprim.zidfs                                       as Zidfs,
+      zprim.lifnr                                       as Lifnr,
+      zprim.zamcf                                       as Zamcf,
+      zprim.waerk                                       as Waerk,
       @Semantics.amount.currencyCode : 'Waerk'
       //      ztotfs     as Ztotfs,
-      cast(ztotfs - zimrac as /eacm/ztotfs) as Ztotfs,
+      cast(zprim.ztotfs - zprim.zimrac as /eacm/ztotfs) as Ztotfs,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimprv                                as Zimprv,
+      zprim.zimprv                                      as Zimprv,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimran                                as Zimran,
-      mwskz                                 as Mwskz,
-      kalsm                                 as Kalsm,
+      zprim.zimran                                      as Zimran,
+      zprim.mwskz                                       as Mwskz,
+      zprim.kalsm                                       as Kalsm,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimiva                                as Zimiva,
+      zprim.zimiva                                      as Zimiva,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimena                                as Zimena,
+      zprim.zimena                                      as Zimena,
       @Semantics.amount.currencyCode : 'Waerk'
-      zibcef                                as Zibcef,
+      zprim.zibcef                                      as Zibcef,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimprac                               as Zimprac,
-      qproz                                 as Qproz,
+      zprim.zimprac                                     as Zimprac,
+      zprim.qproz                                       as Qproz,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimrac                                as Zimrac,
-      qsatz                                 as Qsatz,
-      belnr                                 as Belnr,
-      bldat                                 as Bldat,
-      budat                                 as Budat,
-      zcont                                 as Zcont,
-      zrich                                 as Zrich,
-      zanticipo                             as Zanticipo,
-      zcdaz                                 as Zcdaz,
-      name1                                 as Name1,
-      znzag                                 as Znzag,
-      cbdat                                 as Cbdat,
-      zuonr                                 as Zuonr,
-      zwaer                                 as Zwaer,
+      zprim.zimrac                                      as Zimrac,
+      zprim.qsatz                                       as Qsatz,
+      zprim.belnr                                       as Belnr,
+      zprim.bldat                                       as Bldat,
+      zprim.budat                                       as Budat,
+      zprim.zcont                                       as Zcont,
+      zprim.zrich                                       as Zrich,
+      zprim.zanticipo                                   as Zanticipo,
+      zprim.zcdaz                                       as Zcdaz,
+      zprim.name1                                       as Name1,
+      zprim.znzag                                       as Znzag,
+      zprim.cbdat                                       as Cbdat,
+      zprim.zuonr                                       as Zuonr,
+      zprim.zwaer                                       as Zwaer,
       @Semantics.amount.currencyCode : 'zwaer'
-      ztotfssf                              as Ztotfssf,
+      zprim.ztotfssf                                    as Ztotfssf,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimprvsf                              as Zimprvsf,
+      zprim.zimprvsf                                    as Zimprvsf,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimransf                              as Zimransf,
+      zprim.zimransf                                    as Zimransf,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimprvsfc                             as Zimprvsfc,
+      zprim.zimprvsfc                                   as Zimprvsfc,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimransfc                             as Zimransfc,
+      zprim.zimransfc                                   as Zimransfc,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimenavsc                             as Zimenavsc,
+      zprim.zimenavsc                                   as Zimenavsc,
       @Semantics.amount.currencyCode : 'zwaer'
-      ztotfssfc                             as Ztotfssfc,
+      zprim.ztotfssfc                                   as Ztotfssfc,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimpfat                               as Zimpfat,
+      zprim.zimpfat                                     as Zimpfat,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimpfatvs                             as Zimpfatvs,
+      zprim.zimpfatvs                                   as Zimpfatvs,
       @Semantics.amount.currencyCode : 'zwaer'
-      zimpfatvsc                            as Zimpfatvsc,
+      zprim.zimpfatvsc                                  as Zimpfatvsc,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimpfondo                             as Zimpfondo,
+      zprim.zimpfondo                                   as Zimpfondo,
       @Semantics.amount.currencyCode : 'Waerk'
-      zenaaccu                              as Zenaaccu,
+      zprim.zenaaccu                                    as Zenaaccu,
       @Semantics.amount.currencyCode : 'Waerk'
-      zfndtrat                              as Zfndtrat,
-      witht                                 as Witht,
-      wt_withcd                             as WtWithcd,
+      zprim.zfndtrat                                    as Zfndtrat,
+      zprim.witht                                       as Witht,
+      zprim.wt_withcd                                   as WtWithcd,
       @Semantics.amount.currencyCode : 'Waerk'
-      zimpant                               as Zimpant,
-      sgtxt                                 as Sgtxt,
-      ibelnr                                as Ibelnr,
-      file_name                             as FileName,
-      mime_type                             as MimeType,
-      attachment                            as Attachment,
-      file_name_d                           as FileNameD,
-      attachment_d                          as AttachmentD,
+      zprim.zimpant                                     as Zimpant,
+      zprim.sgtxt                                       as Sgtxt,
+      zprim.ibelnr                                      as Ibelnr,
+      zprim.file_name                                   as FileName,
+      zprim.mime_type                                   as MimeType,
+      zprim.attachment                                  as Attachment,
+      zprim.file_name_d                                 as FileNameD,
+      zprim.attachment_d                                as AttachmentD,
+      zpraa.mailaddress                                 as Mailaddress,
       _Positions,
       _Enasarco,
       _IVA
