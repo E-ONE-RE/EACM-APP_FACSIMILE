@@ -1,0 +1,22 @@
+{
+  "formatVersion": "1",
+  "header": {
+    "description": "Invio mail facsimile",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "className": "/EACM/CL_FAC_MAIL_JOB"
+  },
+  "parameters": [
+    {
+      "name": "P_INVOICE_DATE"
+    },
+    {
+      "name": "P_PAYMENT_DATE"
+    },
+    {
+      "name": "P_RUN_UUID"
+    }
+  ]
+}

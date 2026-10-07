@@ -1,0 +1,142 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName:       'Invio e-mail',
+  typeNamePlural: 'Invii e-mail',
+  title:          { value: 'CreatedAt' },
+  description: {
+      value: 'StatusText',
+      criticality: 'StatusCriticality'
+    }
+}
+
+@UI.presentationVariant: [
+  {
+    qualifier: 'MailRunsPV',
+    sortOrder: [
+      {
+        by: 'CreatedAt',
+        direction: #DESC
+      }
+    ],
+    visualizations: [
+      {
+        type: #AS_LINEITEM
+      }
+    ]
+  }
+]
+
+@UI.selectionVariant: [
+  {
+    qualifier: 'MailRunsSV',
+    text: 'Monitor invii'
+  }
+]
+
+@UI.selectionPresentationVariant: [
+  {
+    qualifier: 'MailRuns',
+    text: 'Monitor invii',
+    presentationVariantQualifier: 'MailRunsPV',
+    selectionVariantQualifier: 'MailRunsSV'
+  }
+]
+
+annotate entity /EACM/C_FMAIL_RUN with
+{
+  @UI.facet: [
+    {
+      id: 'RunInformation',
+      purpose: #STANDARD,
+      type: #IDENTIFICATION_REFERENCE,
+      label: 'Dati invio',
+      position: 10
+    },
+    {
+      id: 'MailLogs',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      targetElement: '_Logs',
+      label: 'Destinatari ed esiti',
+      position: 20
+    }
+  ]
+  @UI.hidden: true
+  RunUuid;
+
+  @UI.lineItem: [
+    {
+      position: 10,
+      label: 'Data e ora',
+      importance: #HIGH
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 10,
+      label: 'Data e ora'
+    }
+  ]
+  CreatedAt;
+
+  @UI.lineItem: [
+    {
+      position: 20,
+      label: 'Creato da',
+      importance: #HIGH
+    }
+  ]
+  @UI.identification: [
+    {
+      position: 20,
+      label: 'Creato da'
+    }
+  ]
+  CreatedBy;
+
+  //  @UI.lineItem: [
+  //    {
+  //      position: 30,
+  //      label: 'Stato',
+  //      importance: #HIGH
+  //    }
+  //  ]
+  //  @UI.identification: [
+  //    {
+  //      position: 30,
+  //      label: 'Stato'
+  //    }
+  //  ]
+  @UI.hidden: true
+  Status;
+
+  @UI.hidden: true
+  StatusCriticality;
+
+//  @UI.dataPoint: {
+//    qualifier: 'MailStatus',
+//    title: 'Stato',
+//    criticality: 'StatusCriticality',
+//    criticalityRepresentation: #WITH_ICON,
+//    longDescription: 'Stato corrente dell''elaborazione dell''invio e-mail'
+//  }
+@UI.lineItem: [
+  {
+    position: 30,
+    label: 'Stato',
+    importance: #HIGH,
+    criticality: 'StatusCriticality',
+    criticalityRepresentation: #WITH_ICON
+  }
+]
+@UI.identification: [
+  {
+    position: 30,
+    label: 'Stato',
+    criticality: 'StatusCriticality',
+    criticalityRepresentation: #WITH_ICON
+  }
+]
+  StatusText;
+}

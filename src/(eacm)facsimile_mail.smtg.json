@@ -1,0 +1,21 @@
+{
+  "formatVersion": "",
+  "header": {
+    "description": "Invio facsimile e dettaglio agente",
+    "originalLanguage": "en",
+    "abapLanguageVersion": "cloudDevelopment"
+  },
+  "generalInformation": {
+    "cdsView": "/EACM/I_FAC_MAIL_TPL",
+    "isPredelivered": true,
+    "emailSubject": "Facsimile competenza {{CommissionPeriod}} e tabulato liquidate"
+  },
+  "templateContent": [
+    {
+      "name": "Body HTML"
+    },
+    {
+      "name": "Body Plain Text"
+    }
+  ]
+}

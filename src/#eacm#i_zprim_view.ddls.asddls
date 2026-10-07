@@ -9,6 +9,11 @@ define root view entity /EACM/I_ZPRIM_VIEW
   composition [0..*] of /EACM/I_FACSPOS_VIEW as _Positions
   composition [0..*] of /EACM/I_ZPRFAC_VIEW  as _Enasarco
   composition [0..*] of /EACM/I_FACIVA_VIEW  as _IVA
+
+  association [0..*] to /EACM/I_FMAIL_LOG    as _MailLogs on  $projection.Bukrs = _MailLogs.Bukrs
+                                                          and $projection.Gjahr = _MailLogs.Gjahr
+                                                          and $projection.Zidfs = _MailLogs.Zidfs
+
 {
   key zprim.bukrs                                       as Bukrs,
   key zprim.gjahr                                       as Gjahr,
@@ -89,5 +94,6 @@ define root view entity /EACM/I_ZPRIM_VIEW
       zpraa.mailaddress                                 as Mailaddress,
       _Positions,
       _Enasarco,
-      _IVA
+      _IVA,
+      _MailLogs
 }

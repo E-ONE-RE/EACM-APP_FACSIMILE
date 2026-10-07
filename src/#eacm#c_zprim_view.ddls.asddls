@@ -82,7 +82,7 @@ define root view entity /EACM/C_ZPRIM_VIEW
         mimeType: 'MimeType',
         fileName: 'FileName',
         contentDispositionPreference: #ATTACHMENT
-//        contentDispositionPreference: #INLINE
+      //        contentDispositionPreference: #INLINE
       }
       Attachment,
       FileNameD,
@@ -90,11 +90,13 @@ define root view entity /EACM/C_ZPRIM_VIEW
         mimeType: 'MimeType',
         fileName: 'FileNameD',
         contentDispositionPreference: #ATTACHMENT
-//        contentDispositionPreference: #INLINE
+      //        contentDispositionPreference: #INLINE
       }
       AttachmentD,
+      Mailaddress,
       /* Associations */
       _Enasarco  : redirected to composition child /EACM/C_ZPRFAC_VIEW,
       _IVA       : redirected to composition child /EACM/C_FACIVA_VIEW,
-      _Positions : redirected to composition child /EACM/C_FACSPOS_VIEW
+      _Positions : redirected to composition child /EACM/C_FACSPOS_VIEW,
+      _MailLogs  : redirected to /EACM/C_FMAIL_LOG
 }

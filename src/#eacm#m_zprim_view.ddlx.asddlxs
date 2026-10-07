@@ -4,6 +4,34 @@
   typeNamePlural: 'Facsimiles',
   title: { value: 'Zidfs' }
 }
+
+@UI.presentationVariant: [
+  {
+    qualifier: 'FacsimiliPV',
+    visualizations: [
+      {
+        type: #AS_LINEITEM
+      }
+    ]
+  }
+]
+
+@UI.selectionVariant: [
+  {
+    qualifier: 'FacsimiliSV',
+    text: 'Facsimili'
+  }
+]
+
+@UI.selectionPresentationVariant: [
+  {
+    qualifier: 'Facsimili',
+    text: 'Facsimili',
+    presentationVariantQualifier: 'FacsimiliPV',
+    selectionVariantQualifier: 'FacsimiliSV'
+  }
+]
+
 annotate entity /EACM/C_ZPRIM_VIEW with
 {
 
@@ -55,7 +83,15 @@ annotate entity /EACM/C_ZPRIM_VIEW with
       label: 'VAT',
       position: 50,
       targetElement: '_IVA'
-    }
+    },
+    {
+      id: 'MailLogs',
+      purpose: #STANDARD,
+      type: #LINEITEM_REFERENCE,
+      label: 'Invii e-mail',
+      position: 60,
+      targetElement: '_MailLogs'
+     }
   ]
 
   @UI.selectionField: [{ position: 10 }]
@@ -70,10 +106,10 @@ annotate entity /EACM/C_ZPRIM_VIEW with
   ]
   //  @UI.lineItem: [ { position: 10 } ]
   @UI.lineItem: [
-//    { position: 10, type : #FOR_ACTION, dataAction: 'onPosting', label: 'Check Posting', requiresContext: true },
-//    { position: 12, type : #FOR_ACTION, dataAction: 'onDownload', label: 'Download PDFs', requiresContext: true },
-//    { position: 14, type : #FOR_ACTION, dataAction: 'onSendMail', label: 'Send mail', requiresContext: true },
-//    { position: 16, type : #FOR_ACTION, dataAction: 'onDelete', label: 'Delete', requiresContext: true },
+  //    { position: 10, type : #FOR_ACTION, dataAction: 'onPosting', label: 'Check Posting', requiresContext: true },
+  //    { position: 12, type : #FOR_ACTION, dataAction: 'onDownload', label: 'Download PDFs', requiresContext: true },
+    { position: 14, type : #FOR_ACTION, dataAction: 'onSendMail', label: 'Send mail', requiresContext: true, invocationGrouping: #CHANGE_SET },
+  //    { position: 16, type : #FOR_ACTION, dataAction: 'onDelete', label: 'Delete', requiresContext: true },
     { position: 17, type : #FOR_ACTION, dataAction: 'onPrint', label: 'Regenerate print', requiresContext: true }
   ]
   @UI.identification: [ { position: 10 } ]
@@ -216,8 +252,8 @@ annotate entity /EACM/C_ZPRIM_VIEW with
   @UI.hidden: true
   FileNameD;
   @UI.hidden: false
-//  @UI.lineItem: [{ position: 102 }]
- @UI.lineItem: [{ label: 'Facsimile detail'} ]
+  //  @UI.lineItem: [{ position: 102 }]
+  @UI.lineItem: [{ label: 'Facsimile detail'} ]
   AttachmentD;
   //    /* Associations */
   //    _Enasarco: redirected to composition child /EACM/C_ZPRFAC_VIEW,

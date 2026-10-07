@@ -1,0 +1,119 @@
+@Metadata.layer: #CUSTOMER
+
+@UI.headerInfo: {
+  typeName: 'Invio e-mail',
+  typeNamePlural: 'Invii e-mail',
+  title: { value: 'Mailaddress' },
+  description: { value: 'Status' }
+}
+
+annotate entity /EACM/C_FMAIL_LOG with
+{
+  @UI.hidden: true
+  RunUuid;
+
+  @UI.hidden: true
+  LogUuid;
+
+  @UI.lineItem: [
+    {
+      position: 10,
+      label: 'Società',
+      importance: #HIGH
+    }
+  ]
+  Bukrs;
+
+  @UI.lineItem: [
+    {
+      position: 20,
+      label: 'Esercizio',
+      importance: #HIGH
+    }
+  ]
+  Gjahr;
+
+  @UI.lineItem: [
+    {
+      position: 30,
+      label: 'ID facsimile',
+      importance: #HIGH
+    }
+  ]
+  Zidfs;
+
+  @UI.lineItem: [
+    {
+      position: 40,
+      label: 'Destinatario',
+      importance: #HIGH
+    }
+  ]
+  Mailaddress;
+
+  //  @UI.lineItem: [
+  //    {
+  //      position: 50,
+  //      label: 'Stato',
+  //      importance: #HIGH
+  //    }
+  //  ]
+  @UI.hidden: true
+  Status;
+
+  @UI.hidden: true
+  StatusCriticality;
+
+//  @UI.dataPoint: {
+//    qualifier: 'MailStatus',
+//    title: 'Stato',
+//    criticality: 'StatusCriticality',
+//    criticalityRepresentation: #WITH_ICON,
+//    longDescription: 'Stato corrente dell''invio al destinatario'
+//  }
+@UI.lineItem: [
+  {
+    position: 50,
+    label: 'Stato',
+    importance: #HIGH,
+    criticality: 'StatusCriticality',
+    criticalityRepresentation: #WITH_ICON
+  }
+]
+  StatusText;
+
+  @UI.lineItem: [
+    {
+      position: 60,
+      label: 'Data elaborazione',
+      importance: #HIGH
+    }
+  ]
+  ProcessedAt;
+
+  @UI.lineItem: [
+    {
+      position: 70,
+      label: 'Facsimile'
+    }
+  ]
+  FileName;
+
+  @UI.lineItem: [
+    {
+      position: 80,
+      label: 'Dettaglio facsimile'
+    }
+  ]
+  FileNameD;
+
+  @UI.multiLineText: true
+  @UI.lineItem: [
+    {
+      position: 90,
+      label: 'Messaggio',
+      importance: #HIGH
+    }
+  ]
+  ErrorText;
+}

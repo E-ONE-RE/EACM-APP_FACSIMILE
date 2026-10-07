@@ -13,11 +13,13 @@ define behavior for /EACM/C_ZPRIM_VIEW //alias <alias_name>
   use association _Positions { create; }
   use association _Enasarco { create; }
 
-//  use action onDownload;
+  //  use action onDownload;
   use action onSendMail;
-//  use action onDelete;
-//  use action onPosting;
-use action onPrint;
+  use function GetDefaultsForonSendMail;
+
+  //  use action onDelete;
+  //  use action onPosting;
+  use action onPrint;
 
 }
 

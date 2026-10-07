@@ -3,16 +3,10 @@
 {
 "FROM":
 [
-"/EACM/ZPRAA",
 "/EACM/ZPRIM"
 ],
 "ASSOCIATED":
-[
-"/EACM/I_FACIVA_VIEW",
-"/EACM/I_FACSPOS_VIEW",
-"/EACM/I_FMAIL_LOG",
-"/EACM/I_ZPRFAC_VIEW"
-],
+[],
 "BASE":
 [],
 "ANNO_REF":

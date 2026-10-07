@@ -1,0 +1,10 @@
+Buongiorno {{AgentName}},
+
+in allegato inviamo facsimile di cui in oggetto con il relato
+tabulato delle liquidate.
+		
+Rimaniamo in attesa di ricevere la fattura entro il [[INVOICE_DATE]]
+Il pagamento verrà effettuato con valuta [[PAYMENT_DATE]].
+ 
+Distinti Saluti
+C/HRR1-IG - Coordinamento Agenti

@@ -11,13 +11,19 @@ authorization master ( global )
   create ( authorization : global );
   update;
   //  delete;
-  field ( readonly ) Bukrs, Gjahr, Zidfs;
+  field ( readonly ) Bukrs, Gjahr, Zidfs, Mailaddress;
   association _IVA { create; }
   association _Positions { create; }
   association _Enasarco { create; }
 
   //  action onDownload result [1] $self;
-  action onSendMail result [1] $self;
+  action onSendMail
+    parameter /EACM/A_FMAIL_PARAM
+    result [1] /EACM/A_FMAIL_RESULT
+  {
+    default function GetDefaultsForonSendMail;
+  }
+
   //  action onDelete result [1] $self;
   //    action onPosting result [1] $self;
   action onPrint result [1] $self;
