@@ -18,6 +18,7 @@ CLASS /eacm/bp_i_zprim_view DEFINITION PUBLIC ABSTRACT FINAL FOR BEHAVIOR OF /ea
         log_uuid    TYPE /eacm/fmail_log-log_uuid,
         bukrs       TYPE /eacm/fmail_log-bukrs,
         gjahr       TYPE /eacm/fmail_log-gjahr,
+        zamcf TYPE /eacm/fmail_run-zamcf,
         zidfs       TYPE /eacm/fmail_log-zidfs,
         mailaddress TYPE /eacm/fmail_log-mailaddress,
         file_name   TYPE /eacm/fmail_log-file_name,

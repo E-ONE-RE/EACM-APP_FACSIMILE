@@ -159,6 +159,8 @@ CLASS lsc_/eacm/i_zprim_view IMPLEMENTATION.
           created_at = lv_now
           created_by = cl_abap_context_info=>get_user_technical_name( )
           status     = lv_run_status
+          gjahr      = ls_first_request-gjahr
+          zamcf      = ls_first_request-zamcf
         ).
 
         INSERT /eacm/fmail_run FROM @ls_run_row.
@@ -378,6 +380,7 @@ CLASS lhc_I_ZPRIM_VIEW IMPLEMENTATION.
       FIELDS (
         Bukrs
         Gjahr
+        Zamcf
         Zidfs
         Mailaddress
         FileName
@@ -533,6 +536,7 @@ CLASS lhc_I_ZPRIM_VIEW IMPLEMENTATION.
         log_uuid    = lv_log_uuid
         bukrs       = <zprim>-Bukrs
         gjahr       = <zprim>-Gjahr
+        zamcf       = <zprim>-Zamcf
         zidfs       = <zprim>-Zidfs
         mailaddress = <zprim>-Mailaddress
         file_name   = <zprim>-FileName

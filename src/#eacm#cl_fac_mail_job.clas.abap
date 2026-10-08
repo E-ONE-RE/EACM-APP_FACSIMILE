@@ -16,7 +16,7 @@ CLASS /eacm/cl_fac_mail_job DEFINITION
     "! Data pagamento
     DATA p_payment_date TYPE d.
 
-PRIVATE SECTION.
+  PRIVATE SECTION.
 
     CONSTANTS:
       gc_sender            TYPE string
@@ -176,7 +176,25 @@ CLASS /eacm/cl_fac_mail_job IMPLEMENTATION.
 
       lv_target_status = gc_status_error.
 
-      ls_log-mailaddress = 'roberto.a.costantino@gmail.com'.
+      "/ Email di test
+      DATA(lo_namespace) =
+        xco_cp_system=>namespace->for( '/EACM/' ).
+*      DATA(lv_exists) = lo_namespace->exists( ).
+      DATA(lv_changeable) = lo_namespace->is_changeable( ).
+      IF lv_changeable = abap_true.
+        SELECT SINGLE
+        FROM /eacm/fmail_run
+        FIELDS created_by
+        WHERE run_uuid = @ls_log-run_uuid
+        INTO @DATA(lv_created_by).
+
+        SELECT SINGLE
+        FROM I_BusinessUserBasic
+        FIELDS \_WorkplaceAddress-DefaultEmailAddress AS EmailAddress
+        WHERE UserID = @lv_created_by
+        INTO @ls_log-mailaddress.
+      ENDIF.
+      "\ Email di test
 
       TRY.
 
