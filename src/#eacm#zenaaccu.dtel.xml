@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Totale Enasarco agente accumulato</DDTEXT>
+     <REPTEXT>Totale Enasarco agente accumulato</REPTEXT>
+     <SCRTEXT_S>Enas.acc.</SCRTEXT_S>
+     <SCRTEXT_M>Totale Enasarco acc.</SCRTEXT_M>
+     <SCRTEXT_L>Totale Enasarco agente accumulato</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

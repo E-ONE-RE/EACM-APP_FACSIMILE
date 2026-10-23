@@ -18,6 +18,18 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Imp. IVA</DDTEXT>
+     <SCRTEXT_S>Imp. IVA</SCRTEXT_S>
+     <SCRTEXT_M>Imp. IVA</SCRTEXT_M>
+     <SCRTEXT_L>Imp. IVA</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

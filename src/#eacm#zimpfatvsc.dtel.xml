@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Tot. fattura facsimile - val.soc. cambio dt fatt.agente</DDTEXT>
+     <REPTEXT>Tot. fattura facsimile - val.soc. cambio dt fatt.agente</REPTEXT>
+     <SCRTEXT_S>Tot.fatt.</SCRTEXT_S>
+     <SCRTEXT_M>Tot. fatt. facsimile</SCRTEXT_M>
+     <SCRTEXT_L>Tot.fatt.fac. val.soc. cambio dt fatt.ag</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

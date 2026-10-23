@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Flag richiesta contabilizzazione</DDTEXT>
+     <REPTEXT>Flag richiesta contabilizzazione</REPTEXT>
+     <SCRTEXT_S>Rich.cont.</SCRTEXT_S>
+     <SCRTEXT_M>Flag rich. contab.</SCRTEXT_M>
+     <SCRTEXT_L>Flag richiesta contabilizzazione</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Contributo enasarco agente effettivo</DDTEXT>
+     <REPTEXT>Contributo Enasarco agente effettivo</REPTEXT>
+     <SCRTEXT_S>Contr.eff.</SCRTEXT_S>
+     <SCRTEXT_M>Contributo effettivo</SCRTEXT_M>
+     <SCRTEXT_L>Contributo Enasarco agente effettivo</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -18,6 +18,18 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Imponibile ritenuta d&apos;acconto</DDTEXT>
+     <SCRTEXT_S>Impon. RAC</SCRTEXT_S>
+     <SCRTEXT_M>Imponibile RAC</SCRTEXT_M>
+     <SCRTEXT_L>Imponibile ritenuta d&apos;acconto</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -19,6 +19,18 @@
     <OUTPUTLEN>000006</OUTPUTLEN>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Procedura(prezzo, controllo, costo...)</DDTEXT>
+     <SCRTEXT_S>Schema CCS</SCRTEXT_S>
+     <SCRTEXT_M>Schema CCST</SCRTEXT_M>
+     <SCRTEXT_L>Schema CCST</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

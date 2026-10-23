@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Indicatore tipo ritenuta d&apos;acconto</DDTEXT>
+     <REPTEXT>Tipo ritenuta</REPTEXT>
+     <SCRTEXT_S>Tipo rit.</SCRTEXT_S>
+     <SCRTEXT_M>Tipo ritenuta</SCRTEXT_M>
+     <SCRTEXT_L>Tipo ritenuta</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Descrizione imposta sul valore aggiunto</DDTEXT>
+     <REPTEXT>Descrizione</REPTEXT>
+     <SCRTEXT_S>Descriz.</SCRTEXT_S>
+     <SCRTEXT_M>Descrizione</SCRTEXT_M>
+     <SCRTEXT_L>Descrizione</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

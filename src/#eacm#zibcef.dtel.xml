@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Importo base calcolo Enasarco e residuo</DDTEXT>
+     <REPTEXT>Importo base calcolo Enasarco e residuo</REPTEXT>
+     <SCRTEXT_S>Enas./res.</SCRTEXT_S>
+     <SCRTEXT_M>Base Enasarco/res.</SCRTEXT_M>
+     <SCRTEXT_L>Importo calcolo Enasarco e residuo</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>

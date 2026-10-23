@@ -19,6 +19,19 @@
     <REFKIND>D</REFKIND>
     <ABAP_LANGUAGE_VERSION>5</ABAP_LANGUAGE_VERSION>
    </DD04V>
+   <I18N_LANGS>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>/EACM/ZIMPRVSF</DDTEXT>
+     <REPTEXT>Prov. mat. - val. soc. cambio data doc.</REPTEXT>
+     <SCRTEXT_S>Prov.mat.</SCRTEXT_S>
+     <SCRTEXT_M>Prov.mat.</SCRTEXT_M>
+     <SCRTEXT_L>Prov. mat. - val. soc. cambio data doc.</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
   </asx:values>
  </asx:abap>
 </abapGit>
